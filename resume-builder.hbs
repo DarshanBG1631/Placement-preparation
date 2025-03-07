@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Resume Builder Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Existing styles remain the same... */
+        :root {
+            --primary-color: blue;
+            --secondary-color: violet;
+            --accent-color: #2c3e50;
+            --text-color: #333;
+            --background-color: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 20px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu li a:hover, .sidebar-menu li a.active {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateX(10px);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, green, lawngreen);
+            color:black;
+        }
+
+        .btn-add {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            margin-top: 10px;
+        }
+
+        .dynamic-list {
+            margin-top: 10px;
+        }
+
+        .dynamic-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .dynamic-list-item input {
+            flex-grow: 1;
+        }
+
+        .dynamic-list-item .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #resumePreview {
+            background-color: #f4f4f4;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .resume-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .resume-header h1 {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+
+        .resume-header h3 {
+            font-size: 20px;
+            color: var(--secondary-color);
+            margin-top: 5px;
+        }
+
+        .resume-section {
+            margin-bottom: 20px;
+        }
+
+        .resume-section h3 {
+            font-size: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .resume-item {
+            margin-bottom: 10px;
+        }
+        /* New Styles for certificates preview */
+        .certificate-preview img {
+            max-width: 300px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+
+        .certificate-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* New Download button style */
+        .btn-download {
+            background: linear-gradient(45deg, green, lawngreen);
+            color: black;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Resume Builder</h2>
+            <ul class="sidebar-menu">
+                <!-- Sidebar menu items -->
+            </ul>
+        </div>
+        <div class="main-content">
+            <form id="resumeForm">
+                <!-- Sections (personal, education, skills, etc.) remain the same -->
+                <div id="personalSection" class="form-section active">
+                    <div class="form-group">
+                        <label for="profilePicture">Profile Picture</label>
+                        <input type="file" id="profilePicture" accept="image/*" onchange="previewProfilePicture()">
+                        <img id="profilePreview" alt="Profile Preview" style="max-width: 150px; margin-top: 10px; display: none;">
+                    </div>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Professional Title</label>
+                        <input type="text" id="title" placeholder="Enter your professional title">
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" rows="4" placeholder="Write a brief professional summary"></textarea>
+                    </div>
+                </div>
+                <!-- Education Section -->
+                <div id="educationSection" class="form-section">
+                    <div class="form-group">
+                        <label>Education</label>
+                        <div id="educationList" class="dynamic-list"></div>
+                        <button type="button" class="btn btn-add" onclick="addEducation()">Add Education</button>
+                    </div>
+                </div>
+                <!-- Skills Section -->
+                <div id="skillsSection" class="form-section">
+                    <div class="form-group">
+                        <label>Skills</label>
+                        <div id="skillsList" class="dynamic-list"></div>
+                        <button type="button" class="btn btn-add" onclick="addSkill()">Add Skill</button>
+                    </div>
+                </div>
+                <!-- Projects Section -->
+                <div id="projectsSection" class="form-section">
+                    <div class="form-group">
+                        <label>Projects</label>
+                        <div id="projectsList" class="dynamic-list"></div>
+                        <button type="button" class="btn btn-add" onclick="addProject()">Add Project</button>
+                    </div>
+                </div>
+                <!-- Achievements Section -->
+                <div id="achievementsSection" class="form-section">
+                    <div class="form-group">
+                        <label>Achievements</label>
+                        <div id="achievementsList" class="dynamic-list"></div>
+                        <button type="button" class="btn btn-add" onclick="addAchievement()">Add Achievement</button>
+                    </div>
+                </div>
+                <!-- Certifications Section -->
+                <div id="certificationsSection" class="form-section">
+                    <div class="form-group">
+                        <label>Certifications</label>
+                        <div id="certificationsList" class="dynamic-list"></div>
+                        <button type="button" class="btn btn-add" onclick="addCertification()">Add Certification</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="certificatesUpload">Upload Certificates</label>
+                        <input type="file" id="certificatesUpload" accept="application/pdf,image/*" multiple onchange="previewCertificates()">
+                        <div id="certificatesPreview" class="certificate-preview"></div>
+                    </div>
+                </div>
+            </form>
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button class="btn btn-secondary" onclick="previousSection()">Previous</button>
+                <button class="btn btn-primary" onclick="nextSection()">Next</button>
+                <button class="btn btn-primary" onclick="generateResume()">Generate Resume</button>
+                <button class="btn btn-secondary" onclick="resetForm()">Clear All</button>
+            </div>
+            <!-- Resume Preview -->
+            <div id="resumePreview"></div>
+
+            <!-- Download Resume Button -->
+            <button class="btn-download" onclick="downloadResume()">Download Resume</button>
+        </div>
+    </div>
+
+    <script>
+    // Existing JavaScript functions (e.g., showSection, addDynamicEntry, etc.) remain the same.
+    let currentSectionIndex = 0;
+    const sections = ['personal', 'education', 'skills', 'projects', 'achievements', 'certifications'];
+
+    // Function to show the appropriate section
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.form-section');
+        sections.forEach(section => section.classList.remove('active'));
+
+        const links = document.querySelectorAll('.sidebar-menu a');
+        links.forEach(link => link.classList.remove('active'));
+
+        // Show the section that matches the ID
+        document.getElementById(sectionId).classList.add('active');
+        document.querySelector(`.sidebar-menu a[data-section="${sectionId}"]`).classList.add('active');
+    }
+
+    // Add event listener for sidebar menu links
+    document.querySelectorAll('.sidebar-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            const sectionId = this.getAttribute('data-section');
+            currentSectionIndex = sections.indexOf(sectionId);
+            showSection(sectionId + 'Section');
+        });
+    });
+
+    // Function to go to the next section
+    function nextSection() {
+        if (currentSectionIndex < sections.length - 1) {
+            currentSectionIndex++;
+            showSection(sections[currentSectionIndex] + 'Section');
+        }
+    }
+
+    // Function to go to the previous section
+    function previousSection() {
+        if (currentSectionIndex > 0) {
+            currentSectionIndex--;
+            showSection(sections[currentSectionIndex] + 'Section');
+        }
+    }
+
+    // Dynamic List Functions for each section
+    function addEducation() {
+        addDynamicEntry('educationList', 'Enter institution, degree, and year');
+    }
+
+    function addSkill() {
+        addDynamicEntry('skillsList', 'Enter skill');
+    }
+
+    function addProject() {
+        addDynamicEntry('projectsList', 'Enter project title and description');
+    }
+
+    function addAchievement() {
+        addDynamicEntry('achievementsList', 'Enter achievement details');
+    }
+
+    function addCertification() {
+        addDynamicEntry('certificationsList', 'Enter certification details (e.g., Name, Year)');
+    }
+
+    function addDynamicEntry(listId, placeholder) {
+        const list = document.getElementById(listId);
+        const item = document.createElement('div');
+        item.classList.add('dynamic-list-item');
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = placeholder;
+        item.appendChild(input);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.classList.add('remove-btn');
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = function() {
+            list.removeChild(item);
+        };
+
+        item.appendChild(removeBtn);
+        list.appendChild(item);
+    }
+
+    function previewProfilePicture() {
+        const file = document.getElementById('profilePicture').files[0];
+        const preview = document.getElementById('profilePreview');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function previewCertificates() {
+        const files = document.getElementById('certificatesUpload').files;
+        const previewContainer = document.getElementById('certificatesPreview');
+        previewContainer.innerHTML = '';
+        Array.from(files).forEach(file => {
+            const fileName = document.createElement('p');
+            fileName.textContent = file.name;
+            previewContainer.appendChild(fileName);
+        });
+    }
+
+    function generateResume() {
+        let resumeHTML = `
+            <div class="resume-header">
+                <h1>${document.getElementById('fullName').value}</h1>
+                <h3>${document.getElementById('title').value}</h3>
+                <p>${document.getElementById('summary').value}</p>
+            </div>
+        `;
+        
+        // Add profile picture if available
+        const profilePicture = document.getElementById('profilePreview').src;
+        if (profilePicture) {
+            resumeHTML += `<div class="resume-section"><h3>Profile Picture</h3><img src="${profilePicture}" alt="Profile Picture" style="max-width: 100px; border-radius: 50%;"></div>`;
+        }
+
+        // Add dynamic sections to resume
+        resumeHTML += generateDynamicSection('Education', 'educationList');
+        resumeHTML += generateDynamicSection('Skills', 'skillsList');
+        resumeHTML += generateDynamicSection('Projects', 'projectsList');
+        resumeHTML += generateDynamicSection('Achievements', 'achievementsList');
+        resumeHTML += generateDynamicSection('Certifications', 'certificationsList');
+        
+        document.getElementById('resumePreview').innerHTML = resumeHTML;
+    }
+
+    function generateDynamicSection(sectionTitle, listId) {
+        const list = document.getElementById(listId);
+        const items = list.querySelectorAll('.dynamic-list-item input');
+        if (items.length > 0) {
+            let sectionHTML = `<div class="resume-section"><h3>${sectionTitle}</h3>`;
+            items.forEach(item => {
+                sectionHTML += `<p>${item.value}</p>`;
+            });
+            sectionHTML += `</div>`;
+            return sectionHTML;
+        }
+        return '';
+    }
+
+    function resetForm() {
+        document.getElementById('resumeForm').reset();
+        document.getElementById('resumePreview').innerHTML = '';
+        const sections = document.querySelectorAll('.form-section');
+        sections.forEach(section => section.classList.remove('active'));
+        showSection('personalSection');
+    }
+
+    function previewCertificates() {
+        const files = document.getElementById('certificatesUpload').files;
+        const previewContainer = document.getElementById('certificatesPreview');
+        previewContainer.innerHTML = ''; // Clear previous previews
+
+        Array.from(files).forEach(file => {
+            const filePreview = document.createElement('div');
+            const fileName = document.createElement('p');
+            fileName.textContent = file.name;
+
+            filePreview.appendChild(fileName);
+
+            if (file.type.startsWith('image')) {
+                const img = document.createElement('img');
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                filePreview.appendChild(img);
+            } else if (file.type === 'application/pdf') {
+                // Preview the PDF file (show a placeholder or link)
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(file);
+                link.textContent = 'View PDF';
+                link.target = '_blank';
+                filePreview.appendChild(link);
+            }
+
+            previewContainer.appendChild(filePreview);
+        });
+    }
+
+    function generateResume() {
+        let resumeHTML = `
+            <div class="resume-header">
+                <h1>${document.getElementById('fullName').value}</h1>
+                <h3>${document.getElementById('title').value}</h3>
+                <p>${document.getElementById('summary').value}</p>
+            </div>
+        `;
+        
+        // Add profile picture if available
+        const profilePicture = document.getElementById('profilePreview').src;
+        if (profilePicture) {
+            resumeHTML += `<div class="resume-section"><h3>Profile Picture</h3><img src="${profilePicture}" alt="Profile Picture" style="max-width: 100px; border-radius: 50%;"></div>`;
+        }
+
+        // Add dynamic sections to resume
+        resumeHTML += generateDynamicSection('Education', 'educationList');
+        resumeHTML += generateDynamicSection('Skills', 'skillsList');
+        resumeHTML += generateDynamicSection('Projects', 'projectsList');
+        resumeHTML += generateDynamicSection('Achievements', 'achievementsList');
+        resumeHTML += generateDynamicSection('Certifications', 'certificationsList');
+        
+        // Add certificates
+        const certificatesPreview = document.getElementById('certificatesPreview');
+        if (certificatesPreview.children.length > 0) {
+            let certificatesHTML = `<div class="resume-section"><h3>Certifications</h3>`;
+            Array.from(certificatesPreview.children).forEach(filePreview => {
+                certificatesHTML += `<p>${filePreview.querySelector('p').textContent}</p>`;
+                const img = filePreview.querySelector('img');
+                if (img) {
+                    certificatesHTML += `<img src="${img.src}" style="max-width: 300px;">`;
+                } else {
+                    const link = filePreview.querySelector('a');
+                    certificatesHTML += `<a href="${link.href}" target="_blank">${link.textContent}</a>`;
+                }
+            });
+            certificatesHTML += `</div>`;
+            resumeHTML += certificatesHTML;
+        }
+
+        document.getElementById('resumePreview').innerHTML = resumeHTML;
+    }
+
+    function downloadResume() {
+        const resumeContent = document.getElementById('resumePreview').innerHTML;
+        const resumeBlob = new Blob([resumeContent], { type: 'text/html' });
+        const url = URL.createObjectURL(resumeBlob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${document.getElementById('fullName').value}_Resume.html`;
+        a.click();
+
+        // Clean up URL object after download
+        URL.revokeObjectURL(url);
+    }
+
+    function resetForm() {
+        document.getElementById('resumeForm').reset();
+        document.getElementById('resumePreview').innerHTML = '';
+        document.getElementById('certificatesPreview').innerHTML = '';
+        const sections = document.querySelectorAll('.form-section');
+        sections.forEach(section => section.classList.remove('active'));
+        showSection('personalSection');
+    }
+    </script>
+
+</body>
+</html>

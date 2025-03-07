@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Round</title>
+    <!-- <link rel="stylesheet" href="page1.css"> -->
+     <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    background: white;
+    
+}
+
+header {
+    text-align: center;
+    background-color: #6200ea;
+    color: white;
+    padding: 1rem 0;
+    
+}
+
+h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+main {
+    padding: 2rem;
+   
+}
+
+/* Grid Layout */
+.company-grid {
+    
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 1rem auto;
+    max-width: 1200px;
+}
+
+/* Company Buttons */
+.company-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    
+
+
+}
+
+.company-buttons button {
+    padding: 1.5rem;
+    background: linear-gradient(45deg, #6a1b9a, #ff4081);
+    color:white;
+    font-size: medium;
+    font-weight: 600;
+    font-family:sans-serif system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border:1px solid black;
+    border-radius: 5px ;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    
+    
+    
+}
+
+.company-buttons button:hover {
+    background-color: palevioletred;
+    animation: bounce 0.5s ease-in-out;
+    
+    
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .company-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+     </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Technical Round</h1>
+    </header>
+    <main>
+        
+        </div>
+        <section class="company-grid">
+            <div class="company-buttons">
+                <button onclick="window.location.href='/Microsoft'">Microsoft</a></button>
+                <button onclick="window.location.href='/Infosys'">Infosys</button>
+                <button onclick="window.location.href='/Cisco'">Cisco</button>
+                <button onclick="window.location.href='/Oracle'">Oracle</button>
+                <button onclick="window.location.href='/Adobe'">Adobe</button>
+                <button onclick="window.location.href='/Amazon'">Amazon</button>
+                <button onclick="window.location.href='/TCS'">TCS</button>
+                <button onclick="window.location.href='/Google'">Google</button>
+                <button onclick="window.location.href='/Facebook'">Facebook (Meta)</button>
+                <button onclick="window.location.href='/Wipro'">Wipro</button>
+                <button onclick="window.location.href='/HCL'">HCL Technologies</button>
+                <button onclick="window.location.href='/TechMahindra'">Tech Mahindra</button>
+                <button onclick="window.location.href='/Apple'">Apple</button>
+                <button onclick="window.location.href='/Intel'">Intel</button>
+                <button onclick="window.location.href='/IBM'">IBM</button>
+                <button onclick="window.location.href='/L&T'">L&T Infotech</button>
+                <button onclick="window.location.href='/Mindtree'">Mindtree</button>
+                <button onclick="window.location.href='/Mphasis'">Mphasis</button>
+                <button onclick="window.location.href='/Flipcart'">Flipcart</button>
+                <button onclick="window.location.href='/Paytm'">Paytm</button>
+                <button onclick="window.location.href='/Swiggy'">Swiggy</button>
+                <button onclick="window.location.href='/Twitter'">Twitter(X)</button>
+                <button onclick="window.location.href='/Robosoft'">Robosoft</button>
+                <button onclick="window.location.href='/Zensar'">Zensar </button>
+            </div>
+            
+        </section>
+    </main>
+</body>
+</html>

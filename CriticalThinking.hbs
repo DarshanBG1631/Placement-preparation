@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. If a tree falls in a forest and no one is around to hear it, does it make a sound?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) Yes, because sound is a physical phenomenon.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) No, because sound only exists when it is heard by a conscious observer.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) It depends on the size of the tree.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) It depends on the location of the forest.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is B) No, because sound only exists when it is heard by a conscious observer. This question challenges the perception of reality and the role of human consciousness in the concept of sound.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. If you could have dinner with any historical figure, who would it be, and why?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) Someone who invented something that changed the world.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) A philosopher who pondered deep existential questions.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) A political leader who influenced history.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) A scientist whose discoveries revolutionized our understanding of the universe.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is D) A scientist whose discoveries revolutionized our understanding of the universe. This question is subjective, but it encourages reflection on the people who shaped the way we view the world.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. If you could change one thing about human nature, what would it be?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) The tendency to be selfish.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) The tendency to fear change.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) The ability to empathize with others.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) The desire for power and control.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) The tendency to be selfish. This question explores the desire for improvement in human behavior and what might lead to a better world.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. Do you think humans are inherently good or evil, or is it shaped by their environment?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) Humans are inherently good.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) Humans are inherently evil.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) Humans are shaped by their environment.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) It is a combination of both inherent nature and environmental factors.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is D) It is a combination of both inherent nature and environmental factors. This question invites critical thought about human nature and the impact of upbringing and circumstances.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. If a person is morally right, should they always act on their moral beliefs, even if it causes harm?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) Yes, because it is more important to act according to moral beliefs.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) No, because sometimes harm should be avoided.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) It depends on the situation and the degree of harm caused.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) Moral beliefs are subjective, and actions should follow social norms.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is C) It depends on the situation and the degree of harm caused. This question examines the ethical dilemma between following one’s beliefs and considering the consequences of those actions.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. Can a person truly change, or are they always limited by their past actions?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) People can change, regardless of their past.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) People cannot change once their past defines them.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) Change is possible only if the person acknowledges their past.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) Change is a gradual process influenced by external factors.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is A) People can change, regardless of their past. This question challenges the concept of personal transformation and how much one's past should define their future.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. Should society value individual success or collective well-being more?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) Individual success is more important.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) Collective well-being should be prioritized over individual success.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) Both are equally important.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) It depends on the situation and the type of success or well-being.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is C) Both are equally important. This question encourages the balancing of personal achievement with the needs of the community.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. Is it better to have loved and lost, or never to have loved at all?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) It’s better to have loved and lost, as love is a valuable experience.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) It’s better never to have loved, to avoid pain.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) It depends on the person and their experiences.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) Love should not be pursued as it can lead to disappointment.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is A) It’s better to have loved and lost, as love is a valuable experience. This is a famous philosophical question about the value of emotional experiences and personal growth.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. If time travel were possible, should we alter the past to improve the future?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) Yes, altering the past could lead to a better future.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) No, changing the past could have unintended negative consequences.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) Only minor changes should be made to avoid major consequences.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) Time travel should be avoided to prevent tampering with history.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) No, changing the past could have unintended negative consequences. This question addresses the risks and ethical dilemmas of manipulating time.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. Can technology ever replace human empathy?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) Yes, technology can simulate empathy effectively.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) No, empathy is a deeply human quality that cannot be replicated.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) Technology can aid in empathy, but cannot fully replace it.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) Empathy is irrelevant in the age of technology.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is C) Technology can aid in empathy, but cannot fully replace it. While technology can assist in understanding and simulating empathetic responses, the emotional depth and genuine understanding inherent to human beings remain irreplaceable.</p>
+                    </div>
+                </div>
+                
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {   q1: 'B',  // Correct answer for Question 1
+    q2: 'D',  // Correct answer for Question 2
+    q3: 'A',  // Correct answer for Question 3
+    q4: 'C',  // Correct answer for Question 4
+    q5: 'B',  // Correct answer for Question 5
+    q6: 'D',  // Correct answer for Question 6
+    q7: 'A',  // Correct answer for Question 7
+    q8: 'C',  // Correct answer for Question 8
+    q9: 'B',  // Correct answer for Question 9
+    q10: 'D'
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. How many ways can 5 students be arranged in a row?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="120">
+                            120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="60">
+                            60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="24">
+                            24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="10">
+                            10
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is 120. The number of ways to arrange 5 students in a row is given by the factorial of 5 (5!). 5! = 5 × 4 × 3 × 2 × 1 = 120.</p>
+                    </div>
+                </div>
+
+                <!-- Question 2: Time, Speed, Distance -->
+                <div class="question-container">
+                    <h3>2. A car travels 100 km in 2 hours. What is its average speed?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="50">
+                            50 km/h
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="100">
+                            100 km/h
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="150">
+                            150 km/h
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="200">
+                            200 km/h
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is 50 km/h. Average speed is calculated as total distance divided by total time. So, 100 km / 2 hours = 50 km/h.</p>
+                    </div>
+                </div>
+
+                <!-- Question 3: Age Problem -->
+                <div class="question-container">
+                    <h3>3. The sum of the ages of A and B is 50 years. A is 10 years older than B. What is the age of A?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="30">
+                            30 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="40">
+                            40 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="35">
+                            35 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="45">
+                            45 years
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is 30 years. Let B's age be x, then A's age will be x + 10. From the equation x + (x + 10) = 50, we get 2x + 10 = 50, which simplifies to x = 20. Therefore, A's age is 20 + 10 = 30 years.</p>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h3>4. If 3 men can complete a task in 12 days, how long will it take for 6 men to complete the same task?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="6">
+                            6 days
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="12">
+                            12 days
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="24">
+                            24 days
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="36">
+                            36 days
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is 6 days. If 3 men can do the job in 12 days, then 6 men will take half the time, i.e., 12 / 2 = 6 days.</p>
+                    </div>
+                </div>
+
+                <!-- Question 5: Averages -->
+                <div class="question-container">
+                    <h3>5. The average of 4 numbers is 10. If one of the numbers is 12, what is the average of the remaining 3 numbers?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="9">
+                            9
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="8">
+                            8
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="10">
+                            10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="11">
+                            11
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is 9. The sum of all numbers is 4 × 10 = 40. Subtracting 12 from this sum, the sum of the remaining 3 numbers is 40 - 12 = 28. Therefore, the average of the remaining numbers is 28 / 3 = 9.</p>
+                    </div>
+                </div>
+
+                <!-- Question 6: Simple Interest -->
+<div class="question-container">
+    <h3>6. What is the simple interest on $1500 at the rate of 5% per annum for 2 years?</h3>
+    <div class="options">
+        <label class="option">
+            <input type="radio" name="q6" value="150">
+            $150
+        </label>
+        <label class="option">
+            <input type="radio" name="q6" value="100">
+            $100
+        </label>
+        <label class="option">
+            <input type="radio" name="q6" value="200">
+            $200
+        </label>
+        <label class="option">
+            <input type="radio" name="q6" value="250">
+            $250
+        </label>
+    </div>
+    <div class="explanation" id="explanation-q6">
+        <p>The correct answer is $150. Simple Interest is calculated using the formula: <br>SI = (P × R × T) / 100 <br>Where P = 1500, R = 5%, and T = 2 years.<br>SI = (1500 × 5 × 2) / 100 = 150.</p>
+    </div>
+</div>
+
+<!-- Question 7: Percentage -->
+<div class="question-container">
+    <h3>7. If the price of an article is reduced by 20%, what is the new price of an article originally priced at $500?</h3>
+    <div class="options">
+        <label class="option">
+            <input type="radio" name="q7" value="400">
+            $400
+        </label>
+        <label class="option">
+            <input type="radio" name="q7" value="350">
+            $350
+        </label>
+        <label class="option">
+            <input type="radio" name="q7" value="450">
+            $450
+        </label>
+        <label class="option">
+            <input type="radio" name="q7" value="500">
+            $500
+        </label>
+    </div>
+    <div class="explanation" id="explanation-q7">
+        <p>The correct answer is $400. The new price after a 20% reduction is calculated as:<br>New price = Original price - (Original price × 20%)<br>New price = 500 - (500 × 0.2) = 500 - 100 = 400.</p>
+    </div>
+</div>
+
+<!-- Question 8: Ratio and Proportion -->
+<div class="question-container">
+    <h3>8. The ratio of the ages of A and B is 5:6. If B is 24 years old, what is the age of A?</h3>
+    <div class="options">
+        <label class="option">
+            <input type="radio" name="q8" value="20">
+            20 years
+        </label>
+        <label class="option">
+            <input type="radio" name="q8" value="22">
+            22 years
+        </label>
+        <label class="option">
+            <input type="radio" name="q8" value="25">
+            25 years
+        </label>
+        <label class="option">
+            <input type="radio" name="q8" value="30">
+            30 years
+        </label>
+    </div>
+    <div class="explanation" id="explanation-q8">
+        <p>The correct answer is 20 years. Since the ratio of A's age to B's age is 5:6, we can use the following proportion to find A's age:<br>A's age / B's age = 5 / 6<br>Let A's age be x, so x / 24 = 5 / 6.<br>Solving for x, we get x = (5 × 24) / 6 = 120 / 6 = 20.</p>
+    </div>
+</div>
+
+<!-- Question 9: Number Series -->
+<div class="question-container">
+    <h3>9. What is the next number in the series: 2, 6, 12, 20, ?</h3>
+    <div class="options">
+        <label class="option">
+            <input type="radio" name="q9" value="30">
+            30
+        </label>
+        <label class="option">
+            <input type="radio" name="q9" value="28">
+            28
+        </label>
+        <label class="option">
+            <input type="radio" name="q9" value="24">
+            24
+        </label>
+        <label class="option">
+            <input type="radio" name="q9" value="26">
+            26
+        </label>
+    </div>
+    <div class="explanation" id="explanation-q9">
+        <p>The correct answer is 30. The pattern in the series is: 2, 6, 12, 20, ...<br>The difference between consecutive terms is increasing by 2: 6-2 = 4, 12-6 = 6, 20-12 = 8.<br>The next difference will be 10, so the next term will be 20 + 10 = 30.</p>
+    </div>
+</div>
+
+<!-- Question 10: Profit and Loss -->
+<div class="question-container">
+    <h3>10. A person buys a shirt for $40 and sells it for $50. What is his profit percentage?</h3>
+    <div class="options">
+        <label class="option">
+            <input type="radio" name="q10" value="25">
+            25%
+        </label>
+        <label class="option">
+            <input type="radio" name="q10" value="20">
+            20%
+        </label>
+        <label class="option">
+            <input type="radio" name="q10" value="30">
+            30%
+        </label>
+        <label class="option">
+            <input type="radio" name="q10" value="15">
+            15%
+        </label>
+    </div>
+    <div class="explanation" id="explanation-q10">
+        <p>The correct answer is 25%. Profit percentage is calculated using the formula: <br>Profit Percentage = (Profit / Cost Price) × 100 <br>Profit = Selling Price - Cost Price = 50 - 40 = 10<br>Profit Percentage = (10 / 40) × 100 = 25%.</p>
+    </div>
+</div>
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {   q1: "120",
+            q2: "50",
+            q3: "30",
+            q4: "6 days",
+            q5: "9",
+            q6: "$150",
+            q7: "$400",
+            q8: "20 years",
+            q9: "30",
+            q10: "25%"
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

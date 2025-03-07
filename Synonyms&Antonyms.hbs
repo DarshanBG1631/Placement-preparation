@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. Choose the synonym of "Abundant".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) Scarce
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) Plentiful
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) Uncommon
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) Rare
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is B) Plentiful. "Abundant" means existing in large quantities, so its synonym is "plentiful".</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. Choose the antonym of "Eager".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) Enthusiastic
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) Indifferent
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) Happy
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) Excited
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) Indifferent. "Eager" means wanting something very much, so its antonym is "indifferent", meaning lack of interest.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. Choose the synonym of "Difficult".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) Easy
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) Hard
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) Simple
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) Light
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is B) Hard. "Difficult" and "hard" are synonyms as they both mean not easy to accomplish.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. Choose the antonym of "Clever".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) Smart
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) Intelligent
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) Dumb
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) Bright
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is C) Dumb. "Clever" means smart or quick-witted, so its antonym is "dumb" or not smart.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. Choose the synonym of "Beautiful".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) Ugly
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) Attractive
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) Plain
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) Boring
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is B) Attractive. "Beautiful" and "attractive" are synonyms, both referring to something pleasing to the eyes.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. Choose the antonym of "Joyful".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) Sad
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) Happy
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) Cheerful
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) Excited
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is A) Sad. "Joyful" means full of happiness, while its antonym "sad" means unhappy.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. Choose the synonym of "Quick".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) Slow
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) Fast
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) Timely
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) Lazy
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) Fast. "Quick" and "fast" are synonyms, both describing something done in a short amount of time.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. Choose the antonym of "Generous".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) Selfish
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) Giving
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) Charitable
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) Kind
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is A) Selfish. "Generous" means giving or selfless, while "selfish" means lacking consideration for others.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. Choose the synonym of "Tidy".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) Untidy
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) Neat
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) Dirty
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) Messy
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) Neat. "Tidy" and "neat" both refer to being organized and free from clutter.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. Choose the antonym of "Brave".</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) Cowardly
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) Fearless
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) Courageous
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) Valiant
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is A) Cowardly. "Brave" means showing courage, while "cowardly" refers to lacking bravery.</p>
+                    </div>
+                </div>
+                
+                    
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = { q1: "B",
+            q2: "B",
+            q3: "B", // For example: question 3's correct answer is 'B'
+            q4: "C", // Update with the correct answer for each question
+            q5: "B",
+            q6: "A",
+            q7: "B",
+            q8: "A",
+            q9: "B",
+            q10: "A"
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

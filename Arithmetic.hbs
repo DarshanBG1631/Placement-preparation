@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. If the sum of two numbers is 30 and their difference is 10, what is the larger number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 25
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is B) 20. Let the numbers be x and y. Solving \(x + y = 30\) and \(x - y = 10\), we get \(x = 20\) and \(y = 10\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. A train travels 60 km in 1 hour and 30 minutes. What is its average speed in km/h?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 40
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 45
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 48
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 60
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) 45. Average speed = \( \frac{\text{distance}}{\text{time}} = \frac{60}{1.5} = 45 \, \text{km/h} \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. If 3 workers can complete a task in 8 days, how many days will it take 6 workers to complete the same task?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 4
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 6
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 8
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 2
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) 4. The work is inversely proportional to the number of workers. \( \frac{3 \times 8}{6} = 4 \) days.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. What is the least number that must be added to 1156 to make it a perfect square?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 5
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 4
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 2
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is B) 4. The nearest perfect square is 1160, which is \(34^2\). Adding 4 to 1156 makes it a perfect square.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. A car covers a distance of 150 km in 3 hours. If it increases its speed by 10 km/h, how much time will it take to cover the same distance?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 2.5 hours
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 2 hours
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 3 hours
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 2.75 hours
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is A) 2.5 hours. New speed = \( \frac{150}{3} + 10 = 60 \, \text{km/h} \), so time = \( \frac{150}{60} = 2.5 \, \text{hours} \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. A person spends 20% of their income on rent and 50% of the remaining on food. If they have $2400 left, what was their income?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) $6000
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) $8000
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) $7500
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) $7000
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) $8000. Let income be \(x\). After rent: \(0.8x\). After food: \(0.5 \times 0.8x = 0.4x\). Remaining = $2400, so \(0.4x = 2400 \implies x = 6000\).</p>
+                    </div>
+                </div>
+        
+        
+        <div class="question-container">
+            <h3>7. A shopkeeper buys an item for $500 and sells it for $650. What is the profit percentage?</h3>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q7" value="A">
+                    A) 25%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="B">
+                    B) 30%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="C">
+                    C) 20%
+                </label>
+                <label class="option">
+                    <input type="radio" name="q7" value="D">
+                    D) 15%
+                </label>
+            </div>
+            <div class="explanation" id="explanation-q7">
+                <p>The correct answer is C) 20%. Profit = \(650 - 500 = 150\). Profit percentage = \(\frac{150}{500} \times 100 = 20\%\).</p>
+            </div>
+        </div>
+        
+        <div class="question-container">
+            <h3>8. If a train 150 meters long passes a pole in 15 seconds, what is the speed of the train in km/h?</h3>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q8" value="A">
+                    A) 36 km/h
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="B">
+                    B) 45 km/h
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="C">
+                    C) 54 km/h
+                </label>
+                <label class="option">
+                    <input type="radio" name="q8" value="D">
+                    D) 60 km/h
+                </label>
+            </div>
+            <div class="explanation" id="explanation-q8">
+                <p>The correct answer is B) 36 km/h. Speed = \( \frac{\text{distance}}{\text{time}} = \frac{150}{15} = 10 \, \text{m/s} \). Convert to km/h: \(10 \times 3.6 = 36 \, \text{km/h}\).</p>
+            </div>
+        </div>
+        
+        <div class="question-container">
+            <h3>9. A number is increased by 25% and then decreased by 20%. What is the net percentage change?</h3>
+            <div class="options">
+                <label class="option">
+                    <input type="radio" name="q9" value="A">
+                    A) 2% increase
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="B">
+                    B) 5% increase
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="C">
+                    C) 4% decrease
+                </label>
+                <label class="option">
+                    <input type="radio" name="q9" value="D">
+                    D) No change
+                </label>
+            </div>
+            <div class="explanation" id="explanation-q9">
+                <p>The correct answer is A) 2% increase. Net change = \( (x + \frac{25}{100}x - \frac{20}{100}(1.25)x) +50.
+                    \) = \( x(1 + 0.25 - 0.20 \times 1.25) \). Simplify: \( x(1.25 - 0.25) = x(1.02) \). Net change = 2% increase.</p>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <h3>10. A man invests $2000 at 5% simple interest per annum. How much interest will he earn in 3 years?</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A">
+                        A) $300
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B">
+                        B) $250
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C">
+                        C) $400
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="D">
+                        D) $350
+                    </label>
+                </div>
+                <div class="explanation" id="explanation-q10">
+                    <p>The correct answer is A) $300. Simple interest = \( \frac{\text{Principal} \times \text{Rate} \times \text{Time}}{100} = \frac{2000 \times 5 \times 3}{100} = 300 \).</p>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = { q1: "B",
+    q2: "B",
+    q3: "A",
+    q4: "B",
+    q5: "A",
+    q6: "B",
+    q7: "C",
+    q8: "B",
+    q9: "A",
+    q10: "A" };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

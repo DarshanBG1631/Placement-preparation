@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. Is x greater than 0?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q11" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q11" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q11">
+                        <p>The correct answer is C) Both statements together are sufficient, but neither statement alone is sufficient. 
+                        Statement 1: x² > 0, which is true for any x except 0 but doesn't specify whether x is positive or negative. 
+                        Statement 2: x is not negative. Together, these indicate x > 0.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. What is the value of y?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q12" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q12" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q12">
+                        <p>The correct answer is A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient. 
+                        Statement 1 provides an equation involving y, such as 2y + 3 = 7, which allows solving for y. 
+                        Statement 2 gives information about the range of y but does not provide a specific value.</p>
+                    </div>
+                </div>
+                
+                
+                <div class="question-container">
+                    <h3>3. If x and y are integers, is x + y an even number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is C) Both statements together are sufficient, but neither statement alone is sufficient. 
+                        Statement 1: x is odd. Statement 2: y is odd. Together, x + y is even since the sum of two odd numbers is even.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. Is the number n divisible by 6?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is C) Both statements together are sufficient, but neither statement alone is sufficient. 
+                        Statement 1: n is divisible by 2. Statement 2: n is divisible by 3. Together, n is divisible by both 2 and 3, 
+                        hence by 6.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. What is the value of x?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient. 
+                        Statement 1 gives a direct equation with x, while Statement 2 provides a condition but not enough to solve for x.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. Is z greater than 0?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient. 
+                        Statement 2 provides a direct inequality involving z that determines its positivity.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. Is the triangle isosceles?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is C) Both statements together are sufficient, but neither statement alone is sufficient. 
+                        Statement 1 and Statement 2 together confirm the properties of the triangle to classify it as isosceles.</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>8. Is p a prime number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is C) Both statements together are sufficient, but neither statement alone is sufficient. 
+                        Statement 1: p is an odd number greater than 1. Statement 2: p has no divisors other than 1 and itself. Together, 
+                        these confirm that p is a prime number.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. Is the area of rectangle R greater than 20 square units?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient. 
+                        Statement 1 provides dimensions of the rectangle (length and width), allowing calculation of the area, 
+                        while Statement 2 only gives a relationship without sufficient numerical values.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. Is the integer k divisible by 4?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) Statement 1 alone is sufficient, but Statement 2 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) Both statements together are sufficient, but neither statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) Each statement alone is sufficient.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="E">
+                            E) Statements 1 and 2 together are not sufficient.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is B) Statement 2 alone is sufficient, but Statement 1 alone is not sufficient. 
+                        Statement 2 directly confirms divisibility of k by 4, while Statement 1 only gives partial divisibility information.</p>
+                    </div>
+                </div>
+                    
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {  q1: "C", // The word "MATH" has 4! = 24 permutations.
+    q2: "A", // Expanding a gas at constant temperature is an isothermal process.
+    q3: "C", // Arranging 5 people in a line: 5! = 120.
+    q4: "C", // Choosing 3 from 7: C(7, 3) = 35.
+    q5: "A", // "BANANA": 6! / (3! × 2!) = 360.
+    q6: "B", // Choosing 4 from 10: C(10, 4) = 210.
+    q7: "C",
+    q8: "C",
+    q9: "A",
+    q10: "B" 
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

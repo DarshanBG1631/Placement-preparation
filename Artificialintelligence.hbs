@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. Calculate the determinant of the matrix \( \begin{bmatrix} 2 & 4 \\ 1 & 3 \end{bmatrix} \).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) -2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 6
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) -6
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is A) 2. The determinant is calculated as \( (2 \times 3) - (4 \times 1) = 6 - 4 = 2 \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. If \( A \) is a \( 2 \times 2 \) matrix with eigenvalues 3 and 5, what is the trace of \( A \)?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 8
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 6
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 5
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) 8. The trace of a matrix is the sum of its eigenvalues. Thus, \( 3 + 5 = 8 \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. Find the eigenvalues of the matrix \( \begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 1 and 4
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 2 and 3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) -1 and -4
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) None of the above
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) 1 and 4. For a diagonal matrix, the eigenvalues are the diagonal elements.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. The cross product of two vectors \( \mathbf{u} = (1, 2, 3) \) and \( \mathbf{v} = (4, 5, 6) \) is:</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) \( (-3, 6, -3) \)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) \( (-3, 9, 0) \)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) \( (3, -6, 3) \)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) \( (0, 0, 0) \)
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is A) \( (-3, 6, -3) \). The cross product is computed as \( \mathbf{u} \times \mathbf{v} = (2 \times 6 - 3 \times 5, 3 \times 4 - 1 \times 6, 1 \times 5 - 2 \times 4) = (-3, 6, -3) \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. Which of the following is a property of a vector space?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) Closure under scalar multiplication
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) Existence of a zero vector
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) Closure under addition
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) All of the above
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is D) All of the above. A vector space must satisfy all these properties along with others like associativity, commutativity, and distributivity.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. Compute \( \mathbf{u} \cdot \mathbf{v} \) for \( \mathbf{u} = (1, 3, -5) \) and \( \mathbf{v} = (4, -2, -1) \).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) -3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 8
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) -13
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is A) 3. Compute the dot product: \( (1 \times 4) + (3 \times -2) + (-5 \times -1) = 4 - 6 + 5 = 3 \).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. What is the result of multiplying a \( 2 \times 3 \) matrix by a \( 3 \times 2 \) matrix?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) A \( 3 \times 3 \) matrix
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) A \( 2 \times 2 \) matrix
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) A \( 2 \times 3 \) matrix
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) Not possible to multiply
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) A \( 2 \times 2 \) matrix. The resulting matrix has dimensions \( 2 \times 2 \), determined by the rows of the first matrix and the columns of the second.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. Which of the following is true about eigenvectors?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) They are orthogonal to eigenvalues.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) They change direction under linear transformation.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) They remain unchanged in direction under linear transformation.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) None of the above
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is C) They remain unchanged in direction under linear transformation, although their magnitude may change.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. What is the rank of the matrix \( \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix} \)?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 0
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 3
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) 1. Since the second row is a multiple of the first, the rank is 1.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. Solve for \( x \) in the equation \( \begin{bmatrix} 2 & x \\ 4 & 3 \end{bmatrix} \): determinant = 10.</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 5
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) -1
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is C) 5. The determinant is calculated as \( (2 \times 3) - (4 \times x) = 10 \), solving \( 6 - 4x = 10 \), we find \( x = 5 \).</p>
+                    </div>
+                </div>
+                  
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {  q1: "A", // 2
+    q2: "B", // 8
+    q3: "A", // 1 and 4
+    q4: "A", // (-3, 6, -3)
+    q5: "D", // All of the above
+    q6: "A", // 3
+    q7: "B", // A 2x2 matrix
+    q8: "C", // They remain unchanged in direction
+    q9: "B", // 1
+    q10: "C" // 5
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. Which of the following options should you choose to solve a problem effectively?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) Make decisions based on emotions and impulses.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) Consider all possible outcomes and choose the most logical one.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) Avoid making a decision until the problem resolves on its own.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) Rely on other people's decisions to guide you.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is B) Consider all possible outcomes and choose the most logical one. Decision-making should be based on a careful evaluation of all available options to ensure the best possible outcome.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. How do you typically handle stress when making a decision?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) I tend to make decisions quickly without thinking through the consequences.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) I take a step back, evaluate my options, and then make a calm decision.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) I avoid making any decisions until the stress passes.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) I seek the opinions of others before making any decision.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) I take a step back, evaluate my options, and then make a calm decision. It’s important to stay calm and rational when making decisions under stress to avoid impulsive choices.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. When presented with conflicting opinions, how do you make a decision?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) I ignore both opinions and trust my own instincts.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) I evaluate the credibility of each opinion before making a decision.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) I simply choose the opinion that sounds easiest to follow.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) I make a decision based on how others react to each opinion.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is B) I evaluate the credibility of each opinion before making a decision. It’s essential to critically assess conflicting opinions to make an informed decision.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. What is the most important factor when making a decision?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) The potential rewards or benefits.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) The opinions of others.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) The risks and consequences involved.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) How quickly the decision can be made.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is C) The risks and consequences involved. Decision-making should take into account both the potential rewards and the risks to avoid adverse outcomes.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. How do you handle failure after making a decision?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) I accept it as part of the process and try again.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) I blame others for the failure.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) I ignore the failure and move on quickly.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) I avoid making decisions in the future to prevent failure.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is A) I accept it as part of the process and try again. Learning from failure is crucial for improvement and better decision-making in the future.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. What is your approach when you have too many options to choose from?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) I make a quick decision to avoid overthinking.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) I carefully evaluate each option before making a decision.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) I seek advice from others before making a decision.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) I eliminate options randomly to simplify the choice.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) I carefully evaluate each option before making a decision. Analyzing each option carefully is the best way to ensure you make an informed decision when faced with multiple choices.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. How do you react when a decision you made has unexpected results?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) I deny that I made a mistake and move forward.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) I analyze the situation, learn from it, and adjust accordingly.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) I ignore the result and continue with my plan.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) I seek approval from others to avoid taking responsibility.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) I analyze the situation, learn from it, and adjust accordingly. Analyzing unexpected outcomes and learning from them helps to improve decision-making in the future.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. How do you prioritize decisions when you have limited time?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) I focus on decisions that are easy to make first.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) I prioritize decisions that have the greatest impact.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) I make all decisions at once to get them done quickly.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) I delegate as many decisions as possible to others.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is B) I prioritize decisions that have the greatest impact. When under time constraints, it's important to focus on decisions that will have the most significant effects.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. How do you handle a situation where your decision is opposed by others?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) I reconsider my decision and make changes to please others.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) I stand by my decision, explaining my reasoning clearly.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) I ignore their opinions and stick to my original decision.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) I avoid the conflict and make a new decision to satisfy everyone.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) I stand by my decision, explaining my reasoning clearly. It's important to be confident in your decision-making while also being open to feedback.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. When faced with a tough decision, how do you approach it?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) I avoid the decision and hope the situation resolves itself.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) I carefully weigh the pros and cons before making a choice.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) I consult others to get their opinion before deciding.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) I make a quick decision and deal with the consequences later.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is B) I carefully weigh the pros and cons before making a choice. Taking the time to evaluate the options thoroughly helps in making a well-informed decision.</p>
+                    </div>
+                </div>
+                
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {   q1: 'B',
+            q2: 'B',
+            q3: 'B',
+            q4: 'C',
+            q5: 'A',
+            q6: 'B',
+            q7: 'B',
+            q8: 'B',
+            q9: 'B',
+            q10: 'B'
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

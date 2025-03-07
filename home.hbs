@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heading</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            color: white;
+        }
+        header {
+            background: url('images/aksha.jpg');
+            background-size: cover;
+            color: black;
+            background-position: center;
+            width: 100%;
+            height: 100vh;
+        }
+        #navbar {
+            width: 100%;
+            height: 80px;
+            background-color: #0f1111;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 10px;
+        }
+        #logo {
+            color: lawngreen;
+            font-size: 40px;
+        }
+        #logbutton, .about {
+            background-color: lawngreen;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #logbutton a, .about a {
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        #logbutton:hover, .about:hover {
+            background-color: limegreen;
+        }
+        h5 {
+            font-size: 30px;
+            color: white;
+        }
+        #h2 {
+            font-size: 20px;
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        pre {
+            font-size: 20px;
+            font-family: cursive;
+            text-align: center;
+        }
+        .center-box {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-top: 20px;
+        }
+        .icon-item img {
+            width: 100px;
+            height: auto;
+        }
+        h3 {
+            margin: 0;
+            padding-bottom: 10px;
+        }
+        p {
+            font-size: 20px;
+            color: white;
+            font-style: bold;
+        }
+        .icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: black;
+        }
+        .icon-item {
+            margin: 20px 0;
+            text-align: center;
+        }
+        #choose {
+            font-size: 30px;
+            color: black;
+        }
+        #chooseus {
+            padding: 60px;
+            background-color: white;
+        }
+        #i1, #i2, #i3 {
+            color: lawngreen;
+            padding: 10px;
+        }
+        #r {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="navbar">
+            <a id="logo">PlacoHR</a>
+            <h5>Solution for placements</h5>
+            <button class="about">
+                <a href="/about">About Us</a>
+            </button>
+            <button id="logbutton">
+               <a href="/login" style="text-decoration: none; color: black;">Login</a>
+            </button>
+
+        </div>
+        <div>
+            <br>
+            <div id="h2">
+                <h2>*Elevate your career, one placement at a time,</h2>
+                <h2>with features that put your goals first.</h2>
+            </div>
+            <br>
+            <ul>
+                <pre>     
+<h3>Goal Setting</h3>
+<h3>Daily Inspiration</h3>
+<h3>Progress Tracking</h3>
+<h3>Community Support</h3>
+<h3>Mindfulness and Reflection</h3>
+<h3>Habit Building</h3>
+<h3>Skill Enhancement</h3>
+<h3>Consistent Practice</h3>
+</pre>
+            </ul>
+        </div>
+    </header>
+
+    <footer class="foot">
+        <div class="center-box">
+            <div id="chooseus">
+                <h3 id="choose">Why Choose Us?</h3>
+            </div>
+            <div class="icon-container">
+                <div class="icon-item">
+                    <img id="r" src="images/icon1.jpg" alt="Icon 1">
+                    <p id="i1">Learn Anytime, Anywhere</p>
+                    <p>No time to sit through long lectures or carry heavy textbooks? No problem! Our platform is built for smartphones,</p>
+                    <p>so you can study wherever you are. Whether you're stuck in traffic or on the go, you’ll always have something new</p>
+                    <p>to learn and practice, right at your fingertips.</p>
+                </div>
+                <div class="icon-item">
+                    <img id="r" src="images/icon2.jpg" alt="Icon 2">
+                    <p id="i2">Master Learning, Not Just Memorizing</p>
+                    <p>Our modules go beyond shortcuts and memorization. With real-life applications, easy-to-remember formulas, and</p>
+                    <p>comprehensive topic coverage, we help you grasp concepts deeply. Learn in a way that fosters true understanding,</p>
+                    <p>so you're confidently prepared for any exam.</p>
+                </div>
+                <div class="icon-item">
+                    <img id="r" src="images/icon3.jpg" alt="Icon 3">
+                    <p id="i3">Learn from the Best - Guided by Industry Experts</p>
+                    <p>Our modules are crafted by seasoned industry professionals with years of experience in teaching, training, and placements.</p>
+                    <p>With their expertise, we bring high-quality education to you, no matter where you are.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

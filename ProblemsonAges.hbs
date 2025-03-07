@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. The sum of the present ages of a father and his son is 60 years. If the father is twice as old as his son, what is the son's age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 18
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 12
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is A) 20. Let the son's age be \(x\). Then, the father's age is \(2x\). From the condition: \(x + 2x = 60\), solving gives \(x = 20\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. A mother is three times as old as her daughter. After 12 years, she will be twice as old as her daughter. What is the daughter's current age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 9
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 8
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) 10. Let the daughter's age be \(x\). Then, the mother's age is \(3x\). From the condition: \(3x + 12 = 2(x + 12)\). Solving, \(x = 10\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. The sum of the ages of a father and his son is 50 years. If the father is 30 years older than the son, how old is the son?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 25
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) 10. Let the son's age be \(x\). Then, the father's age is \(x + 30\). The sum is \(x + (x + 30) = 50\), giving \(x = 10\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. A mother is twice as old as her daughter. If the daughter's age is 15 years, what is the mother's age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 30
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 35
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 40
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 45
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is A) 30. Mother's age is \(2 \times 15 = 30\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. A man is three times as old as his son. In 10 years, their ages will sum to 100. How old is the man?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 30
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 50
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 70
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is C) 60. Let the son's age be \(x\). Then, the man's age is \(3x\). After 10 years: \(x + 10 + 3x + 10 = 100\). Solving, \(x = 20\), so the man is \(3 \times 20 = 60\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. The present age of a father is three times that of his son. After 5 years, the father's age will be twice that of his son. What is the son's current age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) 25
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) 15. Let the son's age be \(x\). Then, the father's age is \(3x\). After 5 years: \(3x + 5 = 2(x + 5)\). Solving, \(x = 15\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. Five years ago, the age of a man was twice the age of his son. The sum of their current ages is 70. What is the son's current age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) 25
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) 30
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) 35
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) 25. Let the son's age be \(x\) and the man's age be \(y\). From the problem: \(y - 5 = 2(x - 5)\) and \(x + y = 70\). Solving, \(x = 25\).</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>8. The present ages of a father and son are in the ratio 5:2. If the difference in their ages is 21 years, what is the son's current age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 14
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 21
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 28
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is B) 21. Let their ages be \(5x\) and \(2x\). The difference is \(5x - 2x = 21\), giving \(x = 7\). The son's age is \(2x = 21\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. Ten years ago, the age of a father was four times that of his son. Now, the father's age is twice that of his son. What is the son's current age?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 25
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 30
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) 20. Let the son's age 10 years ago be \(x\), so the father's age was \(4x\). Now, their ages are \(x + 10\) and \(4x + 10\). From the condition: \(4x + 10 = 2(x + 10)\). Solving, \(x + 10 = 20\).</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. A father’s age is three years more than three times his son’s age. If the father is 45 years old, how old is the son?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 14
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) 13
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is D) 13. Let the son's age be \(x\). Then, the father's age is \(3x + 3\). From the condition: \(3x + 3 = 45\). Solving, \(x = 13\).</p>
+                    </div>
+                </div>
+                
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {  q1: "A",
+    q2: "B",
+    q3: "A",
+    q4: "A",
+    q5: "C",
+    q6: "B",
+    q7: "B",
+    q8: "B",
+    q9: "B",
+    q10: "D",  
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

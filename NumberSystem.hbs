@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. What is the largest 4-digit number that can be formed using the digits 3, 5, 7, and 9?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 9753
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 9759
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 7539
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 9573
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is A) 9753. To form the largest 4-digit number, we arrange the digits in descending order: 9, 7, 5, and 3.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 2 -->
+                <div class="question-container">
+                    <h3>2. What is the greatest common divisor (GCD) of 36 and 60?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 18
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 30
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is A) 12. The factors of 36 are 1, 2, 3, 4, 6, 9, 12, 18, 36, and the factors of 60 are 1, 2, 3, 4, 5, 6, 10, 12, 15, 20, 30, 60. The greatest common factor is 12.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 3 -->
+                <div class="question-container">
+                    <h3>3. What is the LCM (Least Common Multiple) of 12 and 18?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 36
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 72
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 54
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) 36. The LCM of 12 and 18 is found by taking the highest power of each prime factor from the factorizations of both numbers: 12 = 2² × 3, 18 = 2 × 3². The LCM is 2² × 3² = 36.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 4 -->
+                <div class="question-container">
+                    <h3>4. What is the sum of the first 10 positive integers?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 45
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 50
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 55
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 60
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is C) 55. The sum of the first n integers is given by the formula: sum = n(n + 1) / 2. For n = 10, sum = 10(10 + 1) / 2 = 55.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 5 -->
+                <div class="question-container">
+                    <h3>5. What is the square root of 121?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 11
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 14
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is A) 11. The square root of 121 is 11, as 11 × 11 = 121.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 6 -->
+                <div class="question-container">
+                    <h3>6. Which of the following is a prime number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 51
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) 29
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 35
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) 39
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) 29. A prime number is a number greater than 1 that has no positive divisors other than 1 and itself. 29 is prime, while the others are divisible by other numbers.</p>
+                    </div>
+                </div>
+        
+                <!-- Question 7 -->
+                <div class="question-container">
+                    <h3>7. What is the value of 2³?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) 6
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) 8
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) 16
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) 4
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) 8. 2³ means 2 × 2 × 2, which equals 8.</p>
+                    </div>
+                </div>
+        
+                <div class="question-container">
+                    <h3>8. What is the total number of outcomes when two dice are rolled?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 36
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 72
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is C) 36. Each die has 6 faces, so the total number of outcomes is 6 × 6 = 36.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. In how many ways can the letters of the word "APPLE" be arranged?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 240
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 360
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is D) 360. "APPLE" has 5 letters, with 'P' repeating twice. The number of arrangements is 5! / 2! = 120 / 2 = 360.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. How many ways can 4 books be selected from a set of 10 books?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 210
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 5040
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) 10
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is B) 210. This is a combination problem: C(10, 4) = 10! / (4!(10-4)!) = 210.</p>
+                    </div>
+                </div>
+
+            
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {  q1: "A", // The word "MATH" has 4! = 24 permutations.
+    q2: "A", // Expanding a gas at constant temperature is an isothermal process.
+    q3: "A", // Arranging 5 people in a line: 5! = 120.
+    q4: "C", // Choosing 3 from 7: C(7, 3) = 35.
+    q5: "A", // "BANANA": 6! / (3! × 2!) = 360.
+    q6: "B", // Choosing 4 from 10: C(10, 4) = 210.
+    q7: "B",
+    q8: "C",
+    q9: "D",
+    q10: "B", 
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

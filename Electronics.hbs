@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. If A can complete a task in 6 hours and B can complete the same task in 3 hours, how long will it take for them to complete the task together?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 2 hours
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 3 hours
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 1 hour
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 4 hours
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is A) 2 hours. Together, A and B's work rate is \( \frac{1}{6} + \frac{1}{3} = \frac{1}{2} \). Therefore, they complete the task in 2 hours.</p>
+                    </div>
+                </div>
+                
+                <!-- Question 2 -->
+                <div class="question-container">
+                    <h3>2. Simplify \( \sqrt{81} + \sqrt{49} \).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 18
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 10
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) 15. Simplify: \( \sqrt{81} = 9 \) and \( \sqrt{49} = 7 \). Adding them gives \( 9 + 7 = 15 \).</p>
+                    </div>
+                </div>
+                
+                                
+                                <div class="question-container">
+                                    <h3>3. Solve for \(x\): \(2x + 5 = 15\).</h3>
+                                    <div class="options">
+                                        <label class="option">
+                                            <input type="radio" name="q3" value="A">
+                                            A) \(x = 5\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q3" value="B">
+                                            B) \(x = 10\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q3" value="C">
+                                            C) \(x = -5\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q3" value="D">
+                                            D) \(x = 0\)
+                                        </label>
+                                    </div>
+                                    <div class="explanation" id="explanation-q3">
+                                        <p>The correct answer is A) \(x = 5\). Solving the equation \(2x + 5 = 15\): Subtract 5 from both sides to get \(2x = 10\), then divide by 2 to get \(x = 5\).</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="question-container">
+                                    <h3>4. If \(x^2 - 9 = 0\), what are the values of \(x\)?</h3>
+                                    <div class="options">
+                                        <label class="option">
+                                            <input type="radio" name="q4" value="A">
+                                            A) \(x = 3\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q4" value="B">
+                                            B) \(x = -3\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q4" value="C">
+                                            C) \(x = 3 \text{ and } -3\)
+                                        </label>
+                                        <label class="option">
+                                            <input type="radio" name="q4" value="D">
+                                            D) No solution
+                                        </label>
+                                    </div>
+                                    <div class="explanation" id="explanation-q4">
+                                        <p>The correct answer is C) \(x = 3 \text{ and } -3\). Factorizing \(x^2 - 9 = (x - 3)(x + 3) = 0\), giving solutions \(x = 3\) and \(x = -3\).</p>
+                                    </div>
+                                </div>
+                                
+                            <!-- Question 5 -->
+                <div class="question-container">
+                    <h3>5. Solve for \(x\): \(3x - 7 = 2x + 5\).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) \(x = 12\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) \(x = -12\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) \(x = 7\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) \(x = 0\)
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is A) \(x = 12\). Subtract \(2x\) from both sides: \(x - 7 = 5\). Add \(7\): \(x = 12\).</p>
+                    </div>
+                </div>
+                
+                <!-- Question 6 -->
+                <div class="question-container">
+                    <h3>6. Solve \(x^2 + 5x + 6 = 0\).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) \(x = -2\) and \(x = -3\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) \(x = 2\) and \(x = 3\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) \(x = -2\) and \(x = 3\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) \(x = 0\)
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is A) \(x = -2\) and \(x = -3\). Factorize: \((x + 2)(x + 3) = 0\), giving \(x = -2\) and \(x = -3\).</p>
+                    </div>
+                </div>
+                
+                <!-- Question 7 -->
+                <div class="question-container">
+                    <h3>7. Simplify \( \sqrt{16} + 3^2\).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) 13
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) 25
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) 19
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is B) 15. Simplify: \( \sqrt{16} = 4 \) and \( 3^2 = 9 \). Adding them gives \(4 + 9 = 15\).</p>
+                    </div>
+                </div>
+                
+                <!-- Question 8 -->
+                <div class="question-container">
+                    <h3>8. What is \(2^3 \times 3^2\)?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 36
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 72
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 48
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 54
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is B) 72. \(2^3 = 8\), \(3^2 = 9\), and \(8 \times 9 = 72\).</p>
+                    </div>
+                </div>
+                
+                <!-- Question 9 -->
+                <div class="question-container">
+                    <h3>9. Factorize \(x^2 - 4x - 12\).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) \((x - 6)(x + 2)\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) \((x + 6)(x - 2)\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) \((x - 4)(x + 3)\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) None of the above
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is A) \((x - 6)(x + 2)\). Factoring \(x^2 - 4x - 12\) yields two roots: \(x = 6\) and \(x = -2\).</p>
+                    </div>
+                </div>
+                
+                <!-- Question 10 -->
+                <div class="question-container">
+                    <h3>10. Simplify \((3x + 2) - (2x - 5)\).</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) \(x + 7\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) \(x - 3\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) \(5x + 7\)
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) \(x - 7\)
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is A) \(x + 7\). Simplify: \(3x + 2 - 2x + 5 = x + 7\).</p>
+                    </div>
+                </div>
+                
+                 
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {   q1: "A",
+    q2: "B",
+    q3: "A",
+    q4: "C",
+    q5: "A",
+    q6: "A",
+    q7: "B",
+    q8: "B",
+    q9: "A",
+    q10: "A"
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

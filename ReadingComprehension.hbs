@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    
+                    <h3>1. What is the main idea of the passage?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) The benefits of reading books.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) The importance of outdoor activities for children.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) The impact of technology on modern education.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) The role of social media in shaping opinions.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is A) The benefits of reading books. The passage discusses how reading improves cognitive skills and emotional intelligence.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. According to the passage, what is one disadvantage of online learning?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) It lacks flexibility in scheduling.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) It requires too much face-to-face interaction.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) It can lead to feelings of isolation.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) It is too expensive for most students.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is C) It can lead to feelings of isolation. The passage explains how online learning can sometimes create a sense of detachment from peers.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. Which of the following is NOT mentioned in the passage as a benefit of regular exercise?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) Improved mental health.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) Increased lifespan.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) Better sleep quality.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) Enhanced creativity.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is D) Enhanced creativity. While the passage mentions mental health, lifespan, and sleep quality, creativity is not highlighted as a direct benefit of exercise.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. What is the author's opinion on environmental conservation?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) It is too expensive for governments to implement.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) It is a responsibility of every individual to take action.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) It is an issue only for developed countries to address.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) It should be handled by large corporations only.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is B) It is a responsibility of every individual to take action. The author emphasizes personal responsibility in contributing to environmental conservation.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. What did the author suggest as a solution to reduce traffic congestion?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) Building more roads and highways.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) Implementing carpooling and public transportation systems.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) Limiting the number of vehicles in cities.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) Raising fuel prices to discourage driving.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is B) Implementing carpooling and public transportation systems. The passage advocates for public transportation and shared rides as sustainable solutions to congestion.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. How does the author describe the relationship between technology and education?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) Technology has no significant impact on learning outcomes.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) Technology should replace traditional teaching methods.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) Technology enhances learning experiences when used effectively.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) Technology is a hindrance to student focus and concentration.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is C) Technology enhances learning experiences when used effectively. The passage highlights how technology, when integrated properly, can complement traditional teaching methods.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. According to the passage, what is the most important factor in reducing stress?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) Meditation and mindfulness practices.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) Taking medication prescribed by a doctor.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) Engaging in social activities regularly.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) Having a strong support network.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is A) Meditation and mindfulness practices. The passage emphasizes these techniques as effective ways to reduce stress and enhance mental well-being.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. What does the author suggest about climate change?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) It is a natural phenomenon that cannot be influenced by humans.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) Human activities are largely responsible for accelerating climate change.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) Climate change is a myth that has been exaggerated.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) The effects of climate change are not as severe as reported.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is B) Human activities are largely responsible for accelerating climate change. The passage highlights how activities like deforestation and burning fossil fuels contribute to global warming.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. What is the author's stance on the importance of sleep?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) Sleep is overrated and unnecessary for productivity.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) Sleep is vital for physical and mental health, as well as performance.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) Sleep can be sacrificed in favor of work or study.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) Sleep is less important than exercise for overall well-being.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) Sleep is vital for physical and mental health, as well as performance. The passage discusses how adequate sleep is essential for restoring energy and cognitive function.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>10. What can be inferred from the passage about the role of technology in healthcare?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) Technology will eventually replace doctors in all medical fields.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) Technology is enhancing the efficiency and accessibility of healthcare services.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) Technology in healthcare has been largely ineffective in improving patient care.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) Technology is only useful in diagnosing diseases but not in treatment.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is B) Technology is enhancing the efficiency and accessibility of healthcare services. The passage explains how innovations like telemedicine and AI are transforming healthcare delivery.</p>
+                    </div>
+                </div>
+                
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = { q1: 'A',
+      q2: 'C',
+      q3: 'D',
+      q4: 'B',
+      q5: 'B',
+      q6: 'C',
+      q7: 'A',
+      q8: 'B',
+      q9: 'B',
+      q10: 'B'
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

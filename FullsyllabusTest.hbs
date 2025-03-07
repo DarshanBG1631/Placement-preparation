@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Quiz Challenge</title> 
+    <!-- Font Awesome CDN -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .quiz-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+
+        .start-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: #45a049;
+        }
+
+        .timer {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #f21c1c;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .option {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+
+        .option.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .option.correct {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .option.incorrect {
+            background-color: #F44336;
+            color: white;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .day-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: blueviolet;
+        }
+
+        .end-message {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Start page content -->
+        <div id="start-container" class="start-container">
+            <div id="day-icon" class="day-icon"></div>
+            <div id="welcome-message" class="welcome-message">Welocme to today's quiz!</div>
+            <button class="start-btn" id="start-btn">Start Quiz</button>
+        </div>
+
+        <!-- Quiz content (hidden initially) -->
+        <div id="quiz" class="hidden">
+            <div class="timer" id="timer">15:00</div>
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+        </div>
+        
+        <div id="result" class="hidden"></div>
+    </div>
+
+    <script>
+        const DAILY_ICONS = {
+            'Monday': 'fa-calendar-week',
+            'Tuesday': 'fa-brain',
+            'Wednesday': 'fa-lightbulb',
+            'Thursday': 'fa-book-open',
+            'Friday': 'fa-fire',
+            'Saturday': 'fa-graduation-cap',
+            'Sunday': 'fa-rocket'
+        };
+
+        // Quiz questions for different days of the week
+        const quizQuestions = {
+            0: [ { question: "What is the value of y if 5y - 3 = 17?", options: ["2", "4", "5", "6"], correctAnswer: 3 },
+    { question: "What is the next number in the series: 2, 6, 18, 54, ?", options: ["72", "108", "162", "216"], correctAnswer: 2 },
+    { question: "Choose the synonym of 'happy':", options: ["Sad", "Joyful", "Angry", "Lonely"], correctAnswer: 1 },
+    { question: "Which of the following is a verb?", options: ["Run", "Beautiful", "Quick", "Chair"], correctAnswer: 0 },
+    { question: "What is 25% of 200?", options: ["40", "50", "60", "70"], correctAnswer: 1 },
+    { question: "What is the cube of 3?", options: ["9", "27", "18", "21"], correctAnswer: 1 },
+    { question: "What is 2^5?", options: ["16", "32", "64", "128"], correctAnswer: 1 },
+    { question: "Select the odd one out: Cat, Dog, Table, Rabbit", options: ["Cat", "Dog", "Table", "Rabbit"], correctAnswer: 2 },
+    { question: "Choose the antonym of 'fast':", options: ["Slow", "Quick", "Rapid", "Swift"], correctAnswer: 0 },
+    { question: "What is the sum of angles in a quadrilateral?", options: ["90°", "180°", "360°", "270°"], correctAnswer: 2 },
+    { question: "What is the circumference of a circle with radius 7 (π = 22/7)?", options: ["44", "42", "48", "40"], correctAnswer: 0 },
+    { question: "Solve: 9x = 72. Find x.", options: ["7", "8", "9", "10"], correctAnswer: 1 },
+    { question: "What is the largest prime number less than 10?", options: ["5", "7", "9", "8"], correctAnswer: 1 },
+    { question: "Choose the odd one out: Banana, Giraffe, Orange, Mango", options: ["Banana", "Giraffe", "Orange", "Mango"], correctAnswer: 1 },
+    { question: "What is the capital of Italy?", options: ["Paris", "Berlin", "Rome", "Madrid"], correctAnswer: 2 }// Sunday
+        ],
+            1: [{ question: "What is the remainder when 735 is divided by 7?", options: ["0", "1", "2", "3"], correctAnswer: 0 },
+        { question: "Which of the following is a prime number?", options: ["27", "39", "41", "51"], correctAnswer: 2 },
+        { question: "The HCF of 18 and 24 is:", options: ["2", "4", "6", "8"], correctAnswer: 2 },
+        { question: "What is the LCM of 5, 10, and 15?", options: ["30", "60", "90", "120"], correctAnswer: 1 },
+        { question: "What is the value of 2^5?", options: ["32", "16", "64", "8"], correctAnswer: 0 },
+        { question: "Which number is divisible by 11?", options: ["234", "121", "312", "451"], correctAnswer: 1 },
+        { question: "Express 0.125 as a fraction:", options: ["1/4", "1/8", "3/8", "1/12"], correctAnswer: 1 },
+        { question: "What is the sum of the first 10 natural numbers?", options: ["45", "50", "55", "60"], correctAnswer: 2 },
+        { question: "How many factors does 36 have?", options: ["6", "8", "9", "12"], correctAnswer: 1 },
+        { question: "What is the greatest 3-digit number divisible by 7?", options: ["994", "987", "999", "973"], correctAnswer: 1 },
+        { question: "What is the binary equivalent of 13?", options: ["1011", "1111", "1101", "1001"], correctAnswer: 2 },
+        { question: "Find the square root of 144:", options: ["10", "11", "12", "13"], correctAnswer: 2 },
+        { question: "Which is a perfect cube?", options: ["27", "16", "10", "45"], correctAnswer: 0 },
+        { question: "Simplify: 5(3x - 2) = 30", options: ["x = 2", "x = 3", "x = 4", "x = 5"], correctAnswer: 1 },
+        { question: "Find the unit digit of 2^100:", options: ["2", "4", "6", "8"], correctAnswer: 2 }
+    ], // Monday (you can add specific questions)
+            2: [{ question: "How many ways can 4 letters be arranged?", options: ["24", "12", "48", "36"], correctAnswer: 0 },
+        { question: "A coin is tossed 3 times. How many outcomes are possible?", options: ["6", "8", "4", "12"], correctAnswer: 1 },
+        { question: "In how many ways can 5 books be arranged on a shelf?", options: ["60", "120", "24", "6"], correctAnswer: 1 },
+        { question: "How many diagonals does a pentagon have?", options: ["2", "5", "10", "7"], correctAnswer: 3 },
+        { question: "A committee of 3 is formed from 6 people. How many ways?", options: ["20", "10", "15", "6"], correctAnswer: 0 },
+        { question: "In how many ways can 4 people sit in a circle?", options: ["6", "24", "12", "4"], correctAnswer: 0 },
+        { question: "If 2 dice are rolled, how many total outcomes exist?", options: ["36", "12", "24", "18"], correctAnswer: 0 },
+        { question: "A deck has 52 cards. How many combinations of 5 cards can be chosen?", options: ["2598960", "156", "312", "48"], correctAnswer: 0 },
+        { question: "What is the probability of flipping 2 heads with 2 coins?", options: ["1/4", "1/2", "1/3", "3/4"], correctAnswer: 0 },
+        { question: "How many ways can 3 letters be chosen from 5?", options: ["10", "5", "20", "15"], correctAnswer: 0 },
+        { question: "The number of ways to split 10 people into 2 groups of 5 is:", options: ["120", "252", "20", "60"], correctAnswer: 1 },
+        { question: "How many ways to arrange 4 letters if 2 are identical?", options: ["6", "12", "24", "8"], correctAnswer: 1 },
+        { question: "Find the total arrangements of 5 people in a row.", options: ["120", "60", "24", "12"], correctAnswer: 0 },
+        { question: "How many ways to select 2 members out of 7?", options: ["7", "21", "14", "42"], correctAnswer: 1 },
+        { question: "How many permutations of 4 digits are possible?", options: ["720", "120", "5040", "24"], correctAnswer: 0 }
+    ],
+     // Tuesday (you can add specific questions)
+            3: [{ question: "If A is taller than B and B is taller than C, who is the shortest?", options: ["A", "B", "C", "None"], correctAnswer: 2 },
+        { question: "All dogs are animals. Some animals are cats. Conclusion: All cats are dogs. Is this valid?", options: ["Yes", "No", "Partially", "None"], correctAnswer: 1 },
+        { question: "Select the odd one out: Apple, Banana, Mango, Chair", options: ["Apple", "Banana", "Chair", "Mango"], correctAnswer: 2 },
+        { question: "Solve: (3 + 2) * 2 - 4 =", options: ["8", "10", "6", "4"], correctAnswer: 0 },
+        { question: "If 5x + 3 = 18, find x.", options: ["2", "3", "4", "5"], correctAnswer: 1 },
+        { question: "Choose the synonym of 'benevolent':", options: ["Cruel", "Kind", "Sad", "Rich"], correctAnswer: 1 },
+        { question: "Find the antonym of 'expand':", options: ["Broaden", "Contract", "Increase", "Lengthen"], correctAnswer: 1 },
+        { question: "Which word is a palindrome?", options: ["Level", "Word", "Apple", "World"], correctAnswer: 0 },
+        { question: "If x + y = 10 and x - y = 2, find x.", options: ["6", "5", "8", "7"], correctAnswer: 0 },
+        { question: "Which of these numbers is a perfect square?", options: ["45", "36", "49", "Both 36 and 49"], correctAnswer: 3 },
+        { question: "Which part of speech describes a noun?", options: ["Adverb", "Pronoun", "Adjective", "Verb"], correctAnswer: 2 },
+        { question: "Solve: 15 ÷ 3 × 2 =", options: ["5", "10", "15", "20"], correctAnswer: 1 },
+        { question: "Find the next number in the sequence: 3, 6, 12, 24, ?", options: ["36", "48", "72", "30"], correctAnswer: 1 },
+        { question: "Which of the following is not divisible by 2?", options: ["32", "48", "81", "64"], correctAnswer: 2 },
+        { question: "Which of these has the correct plural form?", options: ["Sheeps", "Gooses", "Cacti", "Fishes"], correctAnswer: 2 }
+    ], // Wednesday (you can add specific questions)
+            4: [{ question: "If 3x = 15, what is the value of x?", options: ["5", "3", "7", "4"], correctAnswer: 0 },
+        { question: "Solve: 6x - 3 = 9. Find x.", options: ["1", "2", "3", "4"], correctAnswer: 1 },
+        { question: "Select the synonym of 'obstinate':", options: ["Flexible", "Stubborn", "Caring", "Gentle"], correctAnswer: 1 },
+        { question: "What is the next prime number after 11?", options: ["13", "14", "15", "17"], correctAnswer: 0 },
+        { question: "Choose the antonym of 'fragile':", options: ["Delicate", "Strong", "Gentle", "Weak"], correctAnswer: 1 },
+        { question: "Complete the analogy: Bird is to Fly as Fish is to:", options: ["Run", "Swim", "Crawl", "Jump"], correctAnswer: 1 },
+        { question: "If the cost of 5 pencils is $10, what is the cost of 1 pencil?", options: ["$3", "$2", "$1", "$5"], correctAnswer: 1 },
+        { question: "Find the error: 'She don't know about this.'", options: ["She", "don't", "about", "this"], correctAnswer: 1 },
+        { question: "Which of the following is a conjunction?", options: ["Quickly", "And", "Happy", "Tree"], correctAnswer: 1 },
+        { question: "Solve: 81 ÷ 9 + 3 × 2 =", options: ["18", "21", "15", "12"], correctAnswer: 0 },
+        { question: "Find the next number in the series: 1, 4, 9, 16, ?", options: ["20", "25", "36", "49"], correctAnswer: 1 },
+        { question: "If 4x = 32, what is x?", options: ["6", "8", "10", "12"], correctAnswer: 1 },
+        { question: "Choose the odd one out: Mango, Banana, Apple, Carrot", options: ["Banana", "Carrot", "Apple", "Mango"], correctAnswer: 1 },
+        { question: "What is 20% of 200?", options: ["40", "50", "60", "30"], correctAnswer: 0 },
+        { question: "Which of the following is not a noun?", options: ["Book", "Beauty", "Quickly", "Happiness"], correctAnswer: 2 }
+    ], // Thursday (you can add specific questions)
+            5: [{ question: "What is the square root of 169?", options: ["11", "12", "13", "14"], correctAnswer: 2 },
+        { question: "Find the next number: 2, 4, 8, 16, ?", options: ["20", "30", "32", "64"], correctAnswer: 2 },
+        { question: "Choose the synonym of 'transparent':", options: ["Clear", "Opaque", "Blurry", "Dirty"], correctAnswer: 0 },
+        { question: "If a car travels 120 km in 2 hours, what is its speed?", options: ["40", "60", "70", "80"], correctAnswer: 1 },
+        { question: "Choose the antonym of 'abundant':", options: ["Scanty", "Plenty", "Generous", "Rich"], correctAnswer: 0 },
+        { question: "Find the error: 'She were going home yesterday.'", options: ["She", "were", "going", "home"], correctAnswer: 1 },
+        { question: "Solve: 25 ÷ 5 × 2 =", options: ["10", "15", "20", "25"], correctAnswer: 0 },
+        { question: "What is 15% of 300?", options: ["35", "45", "50", "60"], correctAnswer: 1 },
+        { question: "Which is a verb?", options: ["Run", "Quickly", "Beautiful", "Bird"], correctAnswer: 0 },
+        { question: "What is the cube of 4?", options: ["64", "32", "48", "16"], correctAnswer: 0 },
+        { question: "What is 2^6?", options: ["32", "64", "128", "16"], correctAnswer: 1 },
+        { question: "Select the odd one out: Cat, Dog, Elephant, Phone", options: ["Dog", "Cat", "Phone", "Elephant"], correctAnswer: 2 },
+        { question: "What is the product of 12 × 12?", options: ["144", "121", "132", "156"], correctAnswer: 0 },
+        { question: "Choose the synonym of 'happy':", options: ["Sad", "Joyful", "Angry", "Lonely"], correctAnswer: 1 },
+        { question: "What is the remainder when 100 is divided by 9?", options: ["1", "2", "3", "4"], correctAnswer: 0 }
+    ], // Friday (you can add specific questions)
+            6: [{ question: "What is the value of x if 3x + 2 = 14?", options: ["2", "3", "4", "5"], correctAnswer: 2 },
+        { question: "What is the next number in the series: 5, 10, 20, 40, ?", options: ["50", "60", "80", "100"], correctAnswer: 2 },
+        { question: "Choose the synonym of 'lazy':", options: ["Active", "Diligent", "Idle", "Energetic"], correctAnswer: 2 },
+        { question: "Which of the following is a noun?", options: ["Quick", "Book", "Swift", "Fast"], correctAnswer: 1 },
+        { question: "What is 12% of 400?", options: ["44", "48", "50", "56"], correctAnswer: 1 },
+        { question: "What is the square of 15?", options: ["125", "225", "145", "275"], correctAnswer: 1 },
+        { question: "What is 10^3?", options: ["100", "1000", "10000", "100000"], correctAnswer: 1 },
+        { question: "Select the odd one out: Lion, Tiger, Chair, Leopard", options: ["Lion", "Tiger", "Leopard", "Chair"], correctAnswer: 3 },
+        { question: "Choose the antonym of 'beautiful':", options: ["Ugly", "Smart", "Kind", "Lovely"], correctAnswer: 0 },
+        { question: "What is the sum of angles in a triangle?", options: ["90°", "180°", "360°", "120°"], correctAnswer: 1 },
+        { question: "What is the area of a circle with radius 7 (π = 22/7)?", options: ["154", "132", "144", "100"], correctAnswer: 0 },
+        { question: "Solve: 7x = 42. Find x.", options: ["5", "6", "7", "8"], correctAnswer: 1 },
+        { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], correctAnswer: 2 },
+        { question: "Choose the odd one out: Apple, Mango, Elephant, Orange", options: ["Apple", "Mango", "Elephant", "Orange"], correctAnswer: 2 },
+        { question: "What is the capital of France?", options: ["Rome", "Paris", "Berlin", "Madrid"], correctAnswer: 1 }
+    ]  // Saturday (you can add specific questions)
+        };
+
+        class Quiz {
+            constructor() {
+                this.timer = null;
+                this.timeLeft = 15 * 60; // 15 minutes
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.questions = this.getQuestionsForToday();
+
+                this.timerElement = document.getElementById('timer');
+                this.questionElement = document.getElementById('question');
+                this.optionsElement = document.getElementById('options');
+                this.resultElement = document.getElementById('result');
+                this.startButton = document.getElementById('start-btn');
+                this.quizContainer = document.querySelector('.quiz-container');
+                this.dayIconElement = document.getElementById('day-icon');
+            }
+
+            getQuestionsForToday() {
+                const today = new Date().getDay();
+                return quizQuestions[today] || quizQuestions[0]; // Default to Sunday if no questions
+            }
+
+            displayDayIcon() {
+                const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const today = new Date().getDay();
+                const dayName = dayNames[today];
+                const iconClass = DAILY_ICONS[dayName];
+                this.dayIconElement.innerHTML = `<i class="fas ${iconClass}"></i><br>${dayName}`;
+            }
+
+            start() {
+                this.displayDayIcon();
+                this.startButton.classList.add('hidden');
+                this.quizContainer.style.opacity = 1;
+                this.timerElement.classList.remove('hidden');
+                this.quizContainer.querySelector('#quiz').classList.remove('hidden');
+                this.startTimer();
+                this.loadQuestion();
+            }
+
+            startTimer() {
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimerDisplay();
+
+                    if (this.timeLeft <= 0) {
+                        this.endQuiz();
+                    }
+                }, 1000);
+            }
+
+            updateTimerDisplay() {
+                const minutes = Math.floor(this.timeLeft / 60);
+                const seconds = this.timeLeft % 60;
+                this.timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+
+            loadQuestion() {
+                if (this.currentQuestionIndex >= this.questions.length) {
+                    this.endQuiz();
+                    return;
+                }
+
+                const currentQuestion = this.questions[this.currentQuestionIndex];
+                this.questionElement.textContent = currentQuestion.question;
+
+                this.optionsElement.innerHTML = '';
+                currentQuestion.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.classList.add('option');
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', () => this.selectOption(index));
+                    this.optionsElement.appendChild(optionElement);
+                });
+            }
+
+            selectOption(selectedIndex) {
+                const currentQuestion = this.questions[this.currentQuestionIndex];
+                const options = this.optionsElement.children;
+
+                Array.from(options).forEach((option, index) => {
+                    option.classList.remove('selected');
+                    if (index === currentQuestion.correctAnswer) {
+                        option.classList.add('correct');
+                    }
+                    if (index === selectedIndex) {
+                        option.classList.add(selectedIndex === currentQuestion.correctAnswer ? 'correct' : 'incorrect');
+                    }
+                });
+
+                if (selectedIndex === currentQuestion.correctAnswer) {
+                    this.score++;
+                }
+
+                setTimeout(() => {
+                    this.currentQuestionIndex++;
+                    this.loadQuestion();
+                }, 1000);
+            }
+
+            endQuiz() {
+                clearInterval(this.timer);
+                this.questionElement.classList.add('hidden');
+                this.optionsElement.classList.add('hidden');
+                this.timerElement.classList.add('hidden');
+
+                const percentage = (this.score / this.questions.length) * 100;
+                let message = '';
+
+                if (percentage === 100) {
+                    message = "Perfect Score! Outstanding Performance! 🏆";
+                } else if (percentage >= 90) {
+                    message = "Excellent Work! You're a Quiz Champion! 🌟";
+                } else if (percentage >= 75) {
+                    message = "Great Job! Keep Improving! 👍";
+                } else if (percentage >= 50) {
+                    message = "Good Effort! Study More and You'll Excel! 📚";
+                } else {
+                    message = "Keep Practicing! You Can Do Better! 💪";
+                }
+
+                this.resultElement.classList.remove('hidden');
+                this.resultElement.innerHTML = `
+                    Score: ${this.score}/${this.questions.length}<br>
+                    Percentage: ${percentage.toFixed(2)}%<br>
+                    ${message}
+                `;
+            }
+        }
+
+        // Initialize and start the quiz when the page loads
+        window.onload = () => {
+            const quiz = new Quiz();
+            document.getElementById('start-btn').addEventListener('click', () => quiz.start());
+        };
+    </script>
+</body>
+</html>

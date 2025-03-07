@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. The ratio of two numbers is 3:4. If the sum of the numbers is 56, what is the smaller number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 21
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 32
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 28
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        <p>The correct answer is B) 24. The two numbers are 3x and 4x. Their sum is 7x = 56, so x = 8. The smaller number is 3x = 24.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. If A:B = 2:3 and B:C = 4:5, what is A:C?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 8:15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 2:5
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 4:15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 5:8
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is A) 8:15. Multiply A:B (2:3) by B:C (4:5). A:C = (2×4):(3×5) = 8:15.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. The ratio of the ages of two friends is 4:5. After 6 years, the ratio becomes 5:6. What is the current age of the younger friend?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 18
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 22
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is A) 20. Let the current ages be 4x and 5x. After 6 years, (4x + 6):(5x + 6) = 5:6. Solve to get x = 5, and the younger friend’s age is 4x = 20.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. Divide $360 among A, B, and C in the ratio 3:4:5. What is B's share?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 90
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 150
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 140
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is A) 120. The total ratio is 3+4+5 = 12. B’s share is (4/12) × 360 = 120.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. Two numbers are in the ratio 7:9. If their difference is 18, find the smaller number.</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 72
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 54
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 36
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 63
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is B) 54. The numbers are 7x and 9x. Their difference is 2x = 18, so x = 9. The smaller number is 7x = 54.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. A mixture contains milk and water in the ratio 5:1. If 6 liters of water is added, the ratio becomes 5:2. What is the quantity of milk in the original mixture?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 25 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) 30 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 20 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) 35 liters
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is B) 30 liters. Let the quantity of milk be 5x and water be x. Adding 6 liters of water makes the ratio 5:2. Solve to get x = 6. Milk = 5x = 30 liters.</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>7. A sum of money is divided among A, B, and C in the ratio 2:3:5. If C's share is $400, what is the total amount?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) $800
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) $1,000
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) $1,200
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) $1,600
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is C) $1,200. The total ratio is 2+3+5 = 10. If 5 parts equal $400, 1 part equals $80. The total amount is 10 × $80 = $1,200.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. If 5 pencils cost as much as 7 pens, what is the ratio of the cost of one pencil to one pen?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 5:7
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 7:5
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 1:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 2:3
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is B) 7:5. Since 5 pencils cost the same as 7 pens, the cost of one pencil to one pen is 7:5.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. Two numbers are in the ratio 3:8. If their sum is 121, what is the larger number?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 88
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 33
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 72
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 96
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is A) 88. The numbers are 3x and 8x. Their sum is 11x = 121, so x = 11. The larger number is 8x = 88.</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>10. The ratio of the ages of two people is 4:5. If the sum of their ages is 72 years, what is the age of the younger person?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 32 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 28 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 36 years
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) 40 years
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is A) 32 years. The ratio of their ages is 4:5, so their ages can be represented as 4x and 5x. The sum of their ages is 9x = 72, so x = 8. The age of the younger person is 4x = 32 years.</p>
+                    </div>
+                </div>
+                            
+      
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = { q1: "B", // The word "MATH" has 4! = 24 permutations.
+    q2: "A", // Expanding a gas at constant temperature is an isothermal process.
+    q3: "A", // Arranging 5 people in a line: 5! = 120.
+    q4: "A", // Choosing 3 from 7: C(7, 3) = 35.
+    q5: "B", // "BANANA": 6! / (3! × 2!) = 360.
+    q6: "B", // Choosing 4 from 10: C(10, 4) = 210.
+    q7: "C",
+    q8: "B",
+    q9: "A",
+    q10: "A", 
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

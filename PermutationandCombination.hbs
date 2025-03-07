@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. How many ways can the letters of the word "MATH" be arranged?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 12
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 24
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 36
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 48
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q1">
+                        
+                        <p>The correct answer is B) 24. The word "MATH" has 4 distinct letters, so the total number of permutations is 4! = 4 × 3 × 2 × 1 = 24.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. Which of the following is an example of an isothermal process?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) Heating a gas inside a sealed container.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) Expanding a gas in a piston at constant temperature.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) Compressing a gas without heat exchange.
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) A chemical reaction in a closed container.
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q2">
+                        <p>The correct answer is B) Expanding a gas in a piston at constant temperature. An isothermal process maintains a constant temperature, and in this case, the temperature remains constant during the expansion of the gas.</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>3. How many ways can 5 people be arranged in a line?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 240
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 360
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q3">
+                        <p>The correct answer is B) 120. Arranging 5 people in a line is a permutation problem: 5! = 5 × 4 × 3 × 2 × 1 = 120.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. How many ways can 3 students be chosen from a group of 7?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 21
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 35
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 42
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 49
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q4">
+                        <p>The correct answer is B) 35. This is a combination problem: C(7, 3) = 7! / [(3!)(7-3)!] = 35.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>5. In how many ways can the letters of the word "BANANA" be arranged?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 360
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 720
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q5">
+                        <p>The correct answer is C) 360. The word "BANANA" has 6 letters with repeated letters. The formula is 6! / (3! × 2!) = 360.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. In how many ways can a committee of 4 members be formed from 10 people?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 210
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) 240
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 252
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) 280
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q6">
+                        <p>The correct answer is A) 210. The formula for combinations is C(10, 4) = 10! / [(4!)(10-4)!] = 210.</p>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. A coin is tossed 5 times. How many outcomes result in exactly 3 heads?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) 5
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) 30
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q7">
+                        <p>The correct answer is C) 20. The number of ways is given by C(5, 3) = 5! / [(3!)(5-3)!] = 10 outcomes.</p>
+                    </div>
+                </div>
+                <div class="question-container">
+                    <h3>8. In how many ways can 3 people be seated in a row of 5 chairs?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 10
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q8">
+                        <p>The correct answer is A) 60. First, choose 3 chairs out of 5 (5C3 = 10), and then arrange 3 people in those chairs (3! = 6). Total = 10 × 6 = 60.</p>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h3>9. In how many ways can the letters of "LEVEL" be arranged?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 120
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 60
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 30
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q9">
+                        <p>The correct answer is B) 60. The word "LEVEL" has 5 letters with 'L' and 'E' each repeating twice. Total arrangements = 5! / (2! × 2!) = 120 / 4 = 60.</p>
+                    </div>
+                </div>
+
+                <div class="question-container">
+                    <h3>10. A committee of 3 people is to be formed from a group of 6. How many different committees can be formed?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 20
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 15
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 10
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) 30
+                        </label>
+                    </div>
+                    <div class="explanation" id="explanation-q10">
+                        <p>The correct answer is A) 20. The number of ways to choose 3 people from 6 is given by 6C3 = 6! / (3! × 3!) = 20.</p>
+                    </div>
+                </div>
+                
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {    q1: "B", // The word "MATH" has 4! = 24 permutations.
+    q2: "B", // Expanding a gas at constant temperature is an isothermal process.
+    q3: "B", // Arranging 5 people in a line: 5! = 120.
+    q4: "B", // Choosing 3 from 7: C(7, 3) = 35.
+    q5: "C", // "BANANA": 6! / (3! × 2!) = 360.
+    q6: "A", // Choosing 4 from 10: C(10, 4) = 210.
+    q7: "C",
+    q8: "A",
+    q9: "B",
+    q10: "A", // 
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

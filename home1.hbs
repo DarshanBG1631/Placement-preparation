@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Preparation Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .info-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 25px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .info-card h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .main-header {
+            font-family: 'Roboto', sans-serif;
+            color: #2c3e50;
+            font-size: 3.5rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .start-button {
+            display: inline-block;
+            background: linear-gradient(135deg, green 0%,lawngreen 100%);
+            color: black;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: 30px;
+            box-shadow: 0 10px 25px rgba(37, 117, 252, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(37, 117, 252, 0.4);
+        }
+
+        .color-1 { background-color: #e0f7fa; }
+        .color-2 { background-color: #f3e5f5; }
+        .color-3 { background-color: #fff3e0; }
+        .color-4 { background-color: #e8eaf6; }
+    </style>
+</head>
+<body>
+    <h1 class="main-header">Placement Preparation Journey</h1>
+    
+    <div class="container">
+        <div class="info-card color-1">
+            <h2>Mindset Matters</h2>
+            <p>Cultivate a growth mindset. Every interview is a learning opportunity. Stay confident, prepared, and open to feedback.</p>
+        </div>
+        
+        <div class="info-card color-2">
+            <h2>Continuous Learning</h2>
+            <p>Keep updating your skills. Read, practice, and stay curious. The best candidates are those who never stop learning.</p>
+        </div>
+        
+        <div class="info-card color-3">
+            <h2>Preparation Strategies</h2>
+            <p>Research the company, practice common questions, and prepare thoughtful questions. Confidence comes from thorough preparation.</p>
+        </div>
+        
+        <div class="info-card color-4">
+            <h2>Self-Reflection</h2>
+            <p>Know your strengths and areas for improvement. Be ready to discuss your experiences honestly and positively.</p>
+        </div>
+    </div>
+
+    <a href="/option" class="start-button">Start Preparation</a>
+</body>
+</html>

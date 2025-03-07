@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Aptitude Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-container h3 {
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+
+        .correct {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+
+        .incorrect {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+
+        .explanation {
+            margin-top: 1rem;
+            background-color: #f0f4f8;
+            border-left: 4px solid #2b6cb0;
+            padding: 1rem;
+            font-style: italic;
+            color: #2d3748;
+            display: none;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            background: linear-gradient(135deg, green 0%, lawngreen 100%);
+            color: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+        }
+
+        button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+        }
+
+        #result {
+            display: none;
+            background: white;
+            color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .confetti {
+            position: absolute;
+            top: -50px;
+            width: 10px;
+            height: 10px;
+            background-color: blueviolet;
+            opacity: 0.8;
+            animation: fall 1s infinite ease-in-out;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateX(0) translateY(-50px) rotate(0deg);
+            }
+            100% {
+                transform: translateX(calc(100vw - 10px)) translateY(calc(100vh - 50px)) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Aptitude Test</h1>
+        <p>Answer the following questions:</p>
+    </div>
+    
+    <div class="container">
+        <form id="quizForm">
+            <div id="quiz">
+                <!-- Question 1 -->
+                <div class="question-container active">
+                    <h3>1. A mixture contains 60% alcohol and 40% water. How much of the mixture must be taken to obtain 100 liters of alcohol?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="A">
+                            A) 150 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="B">
+                            B) 200 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="C">
+                            C) 250 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="D">
+                            D) 300 liters
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q1" style="display: none;">
+                        Correct Answer: A) 150 liters. <br>
+                        Explanation: Since the mixture is 60% alcohol, the amount required to get 100 liters of alcohol is calculated as \( \frac{100}{0.6} = 150 \) liters.
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>2. In what ratio should a mixture of 20% and 40% alcohol be mixed to get 30% alcohol?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="A">
+                            A) 1:2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="B">
+                            B) 1:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="C">
+                            C) 2:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="D">
+                            D) 3:2
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q2" style="display: none;">
+                        Correct Answer: A) 1:2. <br>
+                        Explanation: Using the alligation rule, the difference in alcohol percentages gives \( (40 - 30) : (30 - 20) = 1:2 \).
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>3. A mixture consists of 10% salt solution and 90% water. If 20 liters of water are added, what will be the percentage of salt in the mixture?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="A">
+                            A) 5%
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="B">
+                            B) 8%
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="C">
+                            C) 10%
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="D">
+                            D) 12%
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q3" style="display: none;">
+                        Correct Answer: A) 5%. <br>
+                        Explanation: The initial salt solution volume remains unchanged. If 20 liters of water are added, the new percentage of salt is \( \frac{10}{(100 + 20)} \times 100 = 5\% \).
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>4. A person mixes two varieties of tea costing Rs. 50 and Rs. 60 per kg. In what ratio should the two be mixed to make a mixture costing Rs. 55 per kg?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="A">
+                            A) 1:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="B">
+                            B) 2:3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="C">
+                            C) 3:2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="D">
+                            D) 4:5
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q4" style="display: none;">
+                        Correct Answer: A) 1:1. <br>
+                        Explanation: Using the alligation rule, the ratio is \( (60 - 55) : (55 - 50) = 5:5 = 1:1 \).
+                    </p>
+                </div>
+
+                <div class="question-container">
+                    <h3>5. How many liters of a 30% solution should be mixed with 50 liters of a 60% solution to obtain a 50% solution?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="A">
+                            A) 40 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="B">
+                            B) 60 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="C">
+                            C) 80 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="D">
+                            D) 100 liters
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q5" style="display: none;">
+                        Correct Answer: A) 40 liters. <br>
+                        Explanation: Using the rule of alligation:
+                        <br> - Difference between 60% and 50% = 10.
+                        <br> - Difference between 50% and 30% = 20.
+                        <br> - The mixing ratio is \(10:20 = 1:2\). 
+                        <br> Since the amount of the 60% solution is 50 liters, the 30% solution should be \( \frac{50}{2} \times 1 = 40 \) liters.
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>6. A person wants to mix two types of oil costing Rs. 80 and Rs. 100 per liter to get a mixture worth Rs. 90 per liter. In what ratio should the two be mixed?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="A">
+                            A) 1:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="B">
+                            B) 2:3
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="C">
+                            C) 3:2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="D">
+                            D) 4:5
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q6" style="display: none;">
+                        Correct Answer: A) 1:1. <br>
+                        Explanation: Using the rule of alligation:
+                        <br> - Difference between Rs. 100 and Rs. 90 = 10.
+                        <br> - Difference between Rs. 90 and Rs. 80 = 10.
+                        <br> - The mixing ratio is \(10:10 = 1:1\).
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>7. A solution contains 25% acid and 75% water. How much of this solution should be mixed with 60 liters of a 50% acid solution to form a 40% acid solution?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="A">
+                            A) 20 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="B">
+                            B) 30 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="C">
+                            C) 40 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="D">
+                            D) 50 liters
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q7" style="display: none;">
+                        Correct Answer: B) 30 liters. <br>
+                        Explanation: Using the rule of alligation:
+                        <br> - Difference between 50% and 40% = 10.
+                        <br> - Difference between 40% and 25% = 15.
+                        <br> - Mixing ratio is \(10:15 = 2:3\). 
+                        <br> For 60 liters of 50% solution, the 25% solution should be \( \frac{60}{2} \times 3 = 30 \) liters.
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>8. A man mixes two types of rice costing Rs. 30 and Rs. 50 per kg. If he wants to sell the mixture at Rs. 40 per kg, in what ratio should he mix the two varieties?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="A">
+                            A) 1:2
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="B">
+                            B) 2:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="C">
+                            C) 1:1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="D">
+                            D) 3:2
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q8" style="display: none;">
+                        Correct Answer: C) 1:1. <br>
+                        Explanation: Using the rule of alligation:
+                        <br> - Difference between Rs. 50 and Rs. 40 = 10.
+                        <br> - Difference between Rs. 40 and Rs. 30 = 10.
+                        <br> - Mixing ratio is \(10:10 = 1:1\).
+                    </p>
+                </div>
+                
+                <div class="question-container">
+                    <h3>9. A mixture contains 12% salt. If 10 liters of water are added, the concentration reduces to 8%. What was the initial volume of the mixture?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="A">
+                            A) 20 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="B">
+                            B) 25 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="C">
+                            C) 30 liters
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="D">
+                            D) 40 liters
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q9" style="display: none;">
+                        Correct Answer: B) 25 liters. <br>
+                        Explanation: The salt remains constant before and after water is added.
+                        <br> Let the initial volume of the mixture be \( x \). Then, 
+                        <br> \( 12\% \times x = 8\% \times (x + 10) \). 
+                        <br> Solving: \( 0.12x = 0.08(x + 10) \).
+                        <br> \( 0.12x = 0.08x + 0.8 \).
+                        <br> \( 0.04x = 0.8 \), \( x = 25 \) liters.
+                    </p>
+                </div>
+                
+                
+                <!-- Continue similar patterns for questions 5 to 10 -->
+                
+                <div class="question-container">
+                    <h3>10. A chemist has 2 solutions, one of 30% alcohol and the other of 70% alcohol. How many liters of each must be mixed to make 20 liters of a 50% alcohol solution?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="A">
+                            A) 10 liters of each
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="B">
+                            B) 8 liters of 30% and 12 liters of 70%
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="C">
+                            C) 12 liters of 30% and 8 liters of 70%
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="D">
+                            D) 15 liters of 30% and 5 liters of 70%
+                        </label>
+                    </div>
+                    <p class="explanation" id="explanation-q10" style="display: none;">
+                        Correct Answer: B) 8 liters of 30% and 12 liters of 70%. <br>
+                        Explanation: Using alligation, \( (70 - 50) : (50 - 30) = 20:20 = 1:1 \). For a total of 20 liters, mix \( 8:12 \) liters.
+                    </p>
+                </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation-buttons">
+                <button type="button" id="prev-btn" disabled>Previous</button>
+                <button type="button" id="next-btn">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </div>
+        </form>
+
+        <!-- Result -->
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question-container');
+        const totalQuestions = questions.length;
+        const correctAnswers = {  q1: "A", // 1. A mixture contains 60% alcohol and 40% water. How much of the mixture must be taken to obtain 100 liters of alcohol?
+    q2: "A", // 2. In what ratio should a mixture of 20% and 40% alcohol be mixed to get 30% alcohol?
+    q3: "A", // 3. A mixture contains 10% salt solution and 90% water. If 20 liters of water are added, what will be the percentage of salt in the mixture?
+    q4: "A", // 4. A person mixes two varieties of tea costing Rs. 50 and Rs. 60 per kg. In what ratio should the two be mixed to make a mixture costing Rs. 55 per kg?
+    q5: "B", // 5. How many liters of a 30% solution should be mixed with 50 liters of a 60% solution to obtain a 50% solution?
+    q6: "A", // 6. A person wants to mix two types of oil costing Rs. 80 and Rs. 100 per liter to get a mixture worth Rs. 90 per liter. In what ratio should the two be mixed?
+    q7: "B", // 7. A solution contains 25% acid and 75% water. How much of this solution should be mixed with 60 liters of a 50% acid solution to form a 40% acid solution?
+    q8: "C", // 8. A man mixes two types of rice costing Rs. 30 and Rs. 50 per kg. If he wants to sell the mixture at Rs. 40 per kg, in what ratio should he mix the two varieties?
+    q9: "C", // 9. A mixture contains 12% salt. If 10 liters of water are added, the concentration reduces to 8%. What was the initial volume of the mixture?
+    q10: "B"
+     };
+        let currentQuestionIndex = 0;
+
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultDiv = document.getElementById('result');
+
+        function updateNavigation() {
+            questions.forEach((q, index) => q.classList.toggle('active', index === currentQuestionIndex));
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === totalQuestions - 1 ? 'inline-block' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentQuestionIndex--;
+            updateNavigation();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            updateNavigation();
+        });
+
+        document.getElementById('quizForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let score = 0;
+            Object.keys(correctAnswers).forEach(question => {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const options = document.querySelectorAll(`input[name="${question}"]`);
+                
+                options.forEach(option => {
+                    const optionLabel = option.parentElement;
+                    if (option.value === correctAnswers[question]) {
+                        optionLabel.classList.add('correct');
+                    } else if (option.checked) {
+                        optionLabel.classList.add('incorrect');
+                    }
+                    option.disabled = true;
+                });
+
+                if (selectedOption?.value === correctAnswers[question]) score++;
+                document.getElementById(`explanation-${question}`).style.display = 'block';
+            });
+
+            resultDiv.style.display = 'block';
+
+            if (score >= 2) {
+                resultDiv.innerHTML = `
+                    <h2>Congratulations!</h2>
+                    <p>You passed the test with a score of ${score} / ${totalQuestions}.</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+                displayConfetti();
+            } else {
+                resultDiv.innerHTML = `
+                    <h2>Better luck next time!</h2>
+                    <p>Your score: ${score} / ${totalQuestions}</p>
+                    <p>Percentage: ${(score / totalQuestions * 100).toFixed(2)}%</p>
+                `;
+            }
+
+            submitBtn.disabled = true;
+        });
+
+        function displayConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                document.body.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 500px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .chat-box {
+            padding: 20px;
+            height: 500px;
+            overflow-y: auto;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .bot-message,
+        .user-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            width: fit-content;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            background-color: #e0e0e0;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            margin-left: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .head {
+            text-align: center;
+            padding: 10px;
+            background-color: #519cec;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chat-container">
+        <div class="head">
+            <h2>Chat With HR</h2>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <div class="bot-message">HR: Hi, welcome to the interview. What is your name?</div>
+        </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Type your answer..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script>
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('userInput');
+
+        // Questions array
+        const questions = [
+            "What's your name?",
+            "Tell me about yourself.",
+            "What are your strengths?",
+            "What are your weaknesses?",
+            "Why should we hire you?",
+            "Where do you see yourself in 5 years?",
+            "Describe a challenging situation you faced and how you handled it.",
+            "What motivates you?",
+            "How do you handle pressure?",
+        ];
+
+        let answers = {};
+        let currentQuestion = 0;
+
+        function sendMessage() {
+            const userMessage = userInput.value;
+            if (userMessage.trim() !== "") {
+                displayMessage(userMessage, 'user');
+                answers[currentQuestion] = userMessage;
+                userInput.value = "";
+
+                setTimeout(() => {
+                    const summary = generateSummary(currentQuestion, userMessage);
+                    displayMessage(summary, 'bot');
+                }, 1000);
+
+                setTimeout(() => {
+                    if (userMessage.toLowerCase().includes("i don't know") || userMessage.toLowerCase().includes("i dont no")) {
+                        displayMessage("HR: Could you try answering the question again?", 'bot');
+                    } else {
+                        currentQuestion++;
+                        if (currentQuestion < questions.length) {
+                            displayMessage(`HR: ${questions[currentQuestion]}`, 'bot');
+                        }
+                    }
+                }, 2000); // Adjust timing for smooth flow
+            }
+        }
+
+        function displayMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add(sender === 'bot' ? 'bot-message' : 'user-message');
+
+            if (sender === 'bot') {
+                messageDiv.innerHTML = message; // Render HTML for bot messages
+            } else {
+                messageDiv.textContent = message;
+            }
+
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function generateSummary(questionIndex, userAnswer) {
+            let summary = "";
+            switch (questionIndex) {
+                case 0:
+                    const nameMatch = userAnswer.match(/my name is (\w+)/i);
+                    const name = userAnswer.match(/I'm (\w+)/i);
+                    if (nameMatch) {
+                        summary = `HR: Nice to meet you, ${nameMatch[1]}!`;
+                    } else if (name) {
+                        summary = `HR: Nice to meet you, ${name[1]}!`;
+                    } else {
+                        summary = "HR: I didn't catch your name. Could you clarify it?";
+                    }
+                    break;
+                case 1:
+                    summary = "HR: Great, it sounds like you have an interesting background.";
+                    break;
+                case 2:
+                    summary = `HR: Your strengths such as "${userAnswer}" will certainly help you succeed.`;
+                    break;
+                case 3:
+                    summary = `HR: It's good to acknowledge your weaknesses like "${userAnswer}", as it shows self-awareness.`;
+                    break;
+                case 4:
+                    summary = `HR: "${userAnswer}" is a strong reason for us to consider you for this position.`;
+                    break;
+                case 5:
+                    summary = `HR: Ambitious! We hope you achieve your goal of "${userAnswer}" in the next 5 years.`;
+                    break;
+                case 6:
+                    summary = `HR: Thank you for sharing. It sounds like you handled the situation well by "${userAnswer}".`;
+                    break;
+                case 7:
+                    summary = `HR: It's great that "${userAnswer}" motivates you to excel.`;
+                    break;
+                case 8:
+                    summary = "HR: It sounds like you have a good approach to managing pressure.";
+                    break;
+                default:
+                    summary = `HR: Thank you for your answer. We value your feedback! Please share it using this <a href="https://docs.google.com/forms/d/e/1FAIpQLSeESrqyDZ7zP1V-Cz0vdwxIwa0t0jZ9ruDtpFaQzRQfzJGwfw/viewform?usp=header" target="_blank">feedback form</a>.`;
+                    break;
+            }
+            return summary;
+        }
+    </script>
+</body>
+
+</html>
